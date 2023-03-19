@@ -1,0 +1,57 @@
+@import "../../../styles/mixins.scss";
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.item {
+  @include item();
+  grid-template-columns: 1fr 140px;
+
+  input {
+    border: none;
+    padding: 0;
+  }
+}
+
+.action {
+  display: flex;
+  width: 100%;
+  span {
+    @include tableButton();
+  }
+  button {
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
+}
+
+.proggres {
+  height: 40px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  position: relative;
+  background-color: #b3b3b3;
+  color: #fff;
+  overflow: hidden;
+
+  .text {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+  }
+  .bar {
+    background: #000;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: 0.45s ease-in;
+  }
+}

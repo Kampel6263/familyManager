@@ -1,0 +1,42 @@
+@import "../../../styles/mixins.scss";
+
+.item {
+  grid-template-columns: 1fr 100px 120px 120px 128px;
+  @include item();
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.action {
+  display: flex;
+  width: 100%;
+  span {
+    @include tableButton();
+  }
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 15px;
+  .tabItem {
+    padding: 5px 15px;
+    background: #fff;
+    border-radius: 4px;
+    transition: 0.1s;
+
+    cursor: pointer;
+    &:hover {
+      background: #c7c7c7;
+    }
+    &.active {
+      background: #000;
+      color: #fff;
+    }
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
+}
