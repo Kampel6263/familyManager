@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/familyManager/static/css/main.34ef9b62.css",
-    "main.js": "/familyManager/static/js/main.3cb99225.js",
-    "static/js/787.b4ab4cdd.chunk.js": "/familyManager/static/js/787.b4ab4cdd.chunk.js",
-    "static/media/telegram.png": "/familyManager/static/media/telegram.7e0e8edf5c0ab7648854.png",
-    "static/media/steam.png": "/familyManager/static/media/steam.e4cab8898356955595df.png",
-    "static/media/Growing flower.gif": "/familyManager/static/media/Growing flower.15f21583155eba77d9c1.gif",
-    "static/media/google.png": "/familyManager/static/media/google.9db27c1011edb821b59c.png",
-    "static/media/team-svgrepo-com.svg": "/familyManager/static/media/team-svgrepo-com.c656d07e9a3f45e5a916e3b8c2833987.svg",
-    "static/media/photoPlaceholder.jpg": "/familyManager/static/media/photoPlaceholder.75e00f766eaf78738633.jpg",
-    "static/media/subscribe.svg": "/familyManager/static/media/subscribe.7154b5960ed93b1bac76a16701846914.svg",
-    "static/media/todo.svg": "/familyManager/static/media/todo.8915c104e6e91464942a938c74ddd418.svg",
-    "static/media/heart.svg": "/familyManager/static/media/heart.f52cc3000558c3485cb018d09bad9cd6.svg",
-    "index.html": "/familyManager/index.html",
-    "static/media/collapse-left.svg": "/familyManager/static/media/collapse-left.63f820371a2745cd81465f3d8f63454f.svg",
-    "static/media/youtube.svg": "/familyManager/static/media/youtube.6d5f0726fd66ae187d6228aecf9e151b.svg",
-    "main.34ef9b62.css.map": "/familyManager/static/css/main.34ef9b62.css.map",
-    "main.3cb99225.js.map": "/familyManager/static/js/main.3cb99225.js.map",
-    "787.b4ab4cdd.chunk.js.map": "/familyManager/static/js/787.b4ab4cdd.chunk.js.map"
+    "main.css": "/static/css/main.34ef9b62.css",
+    "main.js": "/static/js/main.3307bf4c.js",
+    "static/js/787.b4ab4cdd.chunk.js": "/static/js/787.b4ab4cdd.chunk.js",
+    "static/media/telegram.png": "/static/media/telegram.7e0e8edf5c0ab7648854.png",
+    "static/media/steam.png": "/static/media/steam.e4cab8898356955595df.png",
+    "static/media/Growing flower.gif": "/static/media/Growing flower.15f21583155eba77d9c1.gif",
+    "static/media/google.png": "/static/media/google.9db27c1011edb821b59c.png",
+    "static/media/team-svgrepo-com.svg": "/static/media/team-svgrepo-com.c656d07e9a3f45e5a916e3b8c2833987.svg",
+    "static/media/photoPlaceholder.jpg": "/static/media/photoPlaceholder.75e00f766eaf78738633.jpg",
+    "static/media/subscribe.svg": "/static/media/subscribe.7154b5960ed93b1bac76a16701846914.svg",
+    "static/media/todo.svg": "/static/media/todo.8915c104e6e91464942a938c74ddd418.svg",
+    "static/media/heart.svg": "/static/media/heart.f52cc3000558c3485cb018d09bad9cd6.svg",
+    "index.html": "/index.html",
+    "static/media/collapse-left.svg": "/static/media/collapse-left.63f820371a2745cd81465f3d8f63454f.svg",
+    "static/media/youtube.svg": "/static/media/youtube.6d5f0726fd66ae187d6228aecf9e151b.svg",
+    "main.34ef9b62.css.map": "/static/css/main.34ef9b62.css.map",
+    "main.3307bf4c.js.map": "/static/js/main.3307bf4c.js.map",
+    "787.b4ab4cdd.chunk.js.map": "/static/js/787.b4ab4cdd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.34ef9b62.css",
-    "static/js/main.3cb99225.js"
+    "static/js/main.3307bf4c.js"
   ]
 }
