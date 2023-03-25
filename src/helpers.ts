@@ -20,3 +20,9 @@ export const formatValue = (
 
   return result;
 };
+
+export const totalSum = ({ key, data }: { key: string; data: any[] }) => {
+  return data.reduce((accum, cur) => {
+    return accum + +cur[key];
+  }, 0);
+};

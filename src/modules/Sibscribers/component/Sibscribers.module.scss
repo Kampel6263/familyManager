@@ -1,0 +1,39 @@
+@import "../../../styles/mixins.scss";
+
+.item {
+  @include item();
+  grid-template-columns: 1fr 80px 90px 120px 100px;
+
+  input {
+    border: none;
+    padding: 0;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.action {
+  display: flex;
+  width: 100%;
+  span {
+    @include tableButton();
+  }
+}
+.service {
+  display: grid;
+  grid-template-columns: 28px auto;
+  align-items: center;
+  justify-items: center;
+  .serviceImg {
+    max-height: 18px;
+    max-width: 19px;
+    // width: 25px;
+  }
+  span {
+    line-height: 16px;
+  }
+}

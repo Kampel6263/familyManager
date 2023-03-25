@@ -16,11 +16,12 @@ import Button from "../../../components/Button/Button";
 import WishListModal from "../modals/WishListModal";
 
 type Props = {
+  teamId: string;
   data: WishListType[];
   setData: (data: setDataType) => void;
 };
 
-const WishList: React.FC<Props> = ({ data, setData }) => {
+const WishList: React.FC<Props> = ({ data, teamId, setData }) => {
   const complatedWish = data.filter((el) => el.done);
   const openedWish = data.filter((el) => !el.done);
   const sortData = (data: WishListType[]) =>
@@ -57,6 +58,10 @@ const WishList: React.FC<Props> = ({ data, setData }) => {
       label: "Home",
       value: "home",
     },
+    {
+      label: "Personal",
+      value: "personal",
+    },
   ];
 
   useEffect(() => {
@@ -76,7 +81,7 @@ const WishList: React.FC<Props> = ({ data, setData }) => {
   const totalSum = filteredOpenedData?.reduce((accum, cur) => {
     return accum + cur.sum;
   }, 0);
-
+  const allData = [...filteredOpenedData, ...filteredComplateData];
   return (
     <div>
       <div className={styles.header}>
@@ -106,7 +111,7 @@ const WishList: React.FC<Props> = ({ data, setData }) => {
       </div>
 
       <Table
-        loading={!data || data.length === 0}
+        loading={!allData || allData.length === 0}
         children={
           <>
             <div className={styles.item}>
@@ -116,7 +121,7 @@ const WishList: React.FC<Props> = ({ data, setData }) => {
               <div>Sum(UAH)</div>
               <div>Actions</div>
             </div>
-            {[...filteredOpenedData, ...filteredComplateData].map((el, i) => (
+            {allData.map((el, i) => (
               <div
                 key={el.name + i}
                 className={classNames(styles.item, el.done && styles.done)}
@@ -141,6 +146,7 @@ const WishList: React.FC<Props> = ({ data, setData }) => {
                       setData({
                         query: DatabaseQueryEnum.WISH_LIST,
                         data: el.id,
+                        teamId,
                       });
                     }}
                   >
@@ -151,6 +157,7 @@ const WishList: React.FC<Props> = ({ data, setData }) => {
                       setData({
                         query: DatabaseQueryEnum.WISH_LIST,
                         data: { ...el, done: !el.done },
+                        teamId,
                       });
                     }}
                   >
@@ -167,6 +174,7 @@ const WishList: React.FC<Props> = ({ data, setData }) => {
         closeModal={() => setModalOpen(false)}
         formData={formData}
         initialFormData={initialFormData}
+        teamId={teamId}
         setData={setData}
         setFormData={setFormData}
       />

@@ -12,3 +12,40 @@
   height: 60px;
   align-items: center;
 }
+
+.userData {
+  display: flex;
+  align-items: center;
+  padding: 5px 8px;
+  position: relative;
+
+  cursor: pointer;
+  transition: 0.1s;
+  border-radius: 6px;
+  &:hover {
+    box-shadow: 0 1px 0 #dce5ef, 0 1px 4px rgba(9, 8, 61, 0.08);
+  }
+  img {
+    width: 35px;
+    border-radius: 50%;
+    margin-left: 6px;
+  }
+}
+
+.popup {
+  position: absolute;
+  right: 0;
+  opacity: 0;
+
+  pointer-events: none;
+  top: 40px;
+  transition: 0.2s;
+  &.active {
+    top: 55px;
+    opacity: 1;
+    pointer-events: all;
+  }
+  button {
+    width: 100%;
+  }
+}

@@ -1,5 +1,12 @@
 import classNames from "classnames";
-import { LegacyRef, RefObject, useEffect, useRef, useState } from "react";
+import {
+  LegacyRef,
+  RefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import Button from "../../../components/Button/Button";
 import Table from "../../../components/Table/Table";
 import {
@@ -10,11 +17,12 @@ import {
 import styles from "./TodoList.module.scss";
 
 type Props = {
+  teamId: string;
   data: TodoListDataType[];
   setData: (data: setDataType) => void;
 };
 
-const TodoList: React.FC<Props> = ({ data, setData }) => {
+const TodoList: React.FC<Props> = ({ data, teamId, setData }) => {
   const sortedData = data.sort((a, b) => {
     if (a.done && b.done) {
       return 0;
@@ -35,6 +43,12 @@ const TodoList: React.FC<Props> = ({ data, setData }) => {
 
   const [selectedId, setSelectedId] = useState("");
 
+  const [scrollWidth, setScrollWidth] = useState<number>(0);
+  const ref = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    setScrollWidth(ref.current?.scrollWidth || 0);
+  }, []);
+
   const handleCancel = () => {
     setInputValue("");
     setShowInput(false);
@@ -45,6 +59,7 @@ const TodoList: React.FC<Props> = ({ data, setData }) => {
     setData({
       query: DatabaseQueryEnum.TODO_LIST,
       data: { name, done, id },
+      teamId,
     });
     handleCancel();
   };
@@ -53,14 +68,13 @@ const TodoList: React.FC<Props> = ({ data, setData }) => {
     setData({
       query: DatabaseQueryEnum.TODO_LIST,
       data: id,
+      teamId,
     });
   };
-  const ref = useRef<HTMLDivElement>(null);
+
   const doneItemsCount = data.reduce((accum, curr) => {
     return curr.done ? ++accum : accum;
   }, 0);
-
-  console.log(doneItemsCount, "doneItemsCount");
 
   return (
     <div>
@@ -80,8 +94,7 @@ const TodoList: React.FC<Props> = ({ data, setData }) => {
         <div
           className={styles.bar}
           style={{
-            width:
-              (ref.current?.scrollWidth || 0) * (doneItemsCount / data.length),
+            width: scrollWidth * (doneItemsCount / data.length),
           }}
         ></div>
       </div>

@@ -7,12 +7,13 @@ import {
   setDataType,
   WishListType,
 } from "../../../models";
-import { useEffect } from "react";
+import ModalWrapper from "../../../components/ModalWrapper/ModalWrapper";
 
 type Props = {
   modalOpen: boolean;
   formData: WishListType;
   initialFormData: WishListType;
+  teamId: string;
   setFormData: (data: WishListType) => void;
   setData: (data: setDataType) => void;
   closeModal: () => void;
@@ -22,6 +23,7 @@ const WishListModal: React.FC<Props> = ({
   modalOpen,
   formData,
   initialFormData,
+  teamId,
   setData,
   setFormData,
   closeModal,
@@ -53,6 +55,7 @@ const WishListModal: React.FC<Props> = ({
     setData({
       query: DatabaseQueryEnum.WISH_LIST,
       data: { ...formData, sum: +formData.sum },
+      teamId,
     });
     handleCloseModal();
   };
@@ -61,21 +64,7 @@ const WishListModal: React.FC<Props> = ({
     setFormData({ ...formData, [key]: value });
   };
   return (
-    <Modal
-      isOpen={modalOpen}
-      style={{
-        content: {
-          width: "400px",
-          height: "200px",
-          left: "50%",
-          top: "50%",
-          transform: "translate(-50%, -50%)",
-        },
-        overlay: {
-          backgroundColor: "#000000b2",
-        },
-      }}
-    >
+    <ModalWrapper modalOpen={modalOpen}>
       <div className={styles.modal}>
         <h3>Add a new wish</h3>
         <div className={styles.form}>
@@ -101,6 +90,7 @@ const WishListModal: React.FC<Props> = ({
               </option>
               <option value="home">Home</option>
               <option value="general">General</option>
+              <option value="personal">Personal</option>
             </select>
             <select
               name="select"
@@ -137,7 +127,7 @@ const WishListModal: React.FC<Props> = ({
           </div>
         </div>
       </div>
-    </Modal>
+    </ModalWrapper>
   );
 };
 

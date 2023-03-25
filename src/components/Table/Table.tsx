@@ -11,6 +11,7 @@ const Table: React.FC<Props> = ({ children, loading }) => {
   return (
     <div className={styles.table}>
       {children}
+      {!children && <Loader />}
       {loading && <Loader />}
     </div>
   );

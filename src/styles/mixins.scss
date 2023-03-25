@@ -9,6 +9,11 @@
   padding: 8px 25px;
   justify-items: start;
   column-gap: 10px;
+  &:nth-child(2n-1) {
+    &:not(:first-child) {
+      background: rgb(241, 245, 248);
+    }
+  }
   &.done {
     opacity: 0.5;
     background-color: #eeeeee;
