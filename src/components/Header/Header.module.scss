@@ -34,14 +34,14 @@
 
 .popup {
   position: absolute;
-  right: 0;
+  left: 0;
   opacity: 0;
 
   pointer-events: none;
   top: 40px;
   transition: 0.2s;
   &.active {
-    top: 55px;
+    top: 54px;
     opacity: 1;
     pointer-events: all;
   }

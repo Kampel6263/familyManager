@@ -1,19 +1,23 @@
 import classNames from "classnames";
 import React from "react";
-import { TeamUserDataType } from "../../../../models";
+import { TeamUserDataType, UserDataType } from "../../../../models";
 import styles from "./MemberItem.module.scss";
 import photoPlaceholder from "../../../../assets/globalImgs/photoPlaceholder.jpg";
 
 type Props = {
   userData: TeamUserDataType;
+  currentUser: UserDataType;
 };
 
-const MemberItem: React.FC<Props> = ({ userData }) => {
+const MemberItem: React.FC<Props> = ({ userData, currentUser }) => {
   return (
     <div className={styles.card}>
       <div className={styles.content}>
         <img src={userData.photoURL || photoPlaceholder} alt="" />
-        <div>{userData.displayName || userData.email}</div>
+        <div>
+          {userData.displayName || userData.email}
+          {currentUser.email === userData.email ? "(You)" : ""}
+        </div>
       </div>
       <div
         className={classNames(

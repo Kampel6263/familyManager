@@ -10,7 +10,7 @@ type Props = {
 
 const Button: React.FC<Props> = ({
   text,
-  type = "primary",
+  type = "default",
   disabled,
   onClick,
 }) => {

@@ -27,7 +27,7 @@ const Header: React.FC<Props> = ({ userData, logout }) => {
           <img src={userData?.photoURL || photoPlaceholder} alt="" />
 
           <div className={classNames(styles.popup, showPopup && styles.active)}>
-            <Button text="Logout" onClick={() => logout()} />
+            <Button text="Logout" onClick={() => logout()} type={"primary"} />
           </div>
         </div>
       </div>

@@ -52,6 +52,7 @@ export interface UserDataType {
 
 export interface TeamUserDataType extends UserDataType {
   verified: boolean;
+  owner: boolean;
 }
 
 export type TeamDataType = {

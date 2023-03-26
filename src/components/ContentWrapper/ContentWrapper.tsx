@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { AppDataType, setDataType, TeamUserDataType } from "../../models";
 import Login from "../../modules/Login/component/Login";
 import Sibscribers from "../../modules/Sibscribers/component/Sibscribers";
@@ -28,7 +28,7 @@ const ContentWrapper: React.FC<Props> = ({
         <>
           {appData.teamData?.teamId ? (
             <Routes>
-              <Route path="/" element={<div>Test</div>} />
+              <Route path="/" element={<Navigate to={"wish-list"} />} />
               <Route
                 path="wish-list"
                 element={

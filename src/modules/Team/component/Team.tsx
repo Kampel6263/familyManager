@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TeamDataType, TeamUserDataType, UserDataType } from "../../../models";
+import AddUserModal from "../modals/AddUserModal";
 import MemberItem from "./MemberItem/MemberItem";
-import AddUserModal from "./modals/AddUserModal";
 import styles from "./Team.module.scss";
 
 type Props = {
@@ -17,8 +17,8 @@ const Team: React.FC<Props> = ({ teamData, userData, addUser }) => {
     <div>
       <h3>Team</h3>
       <div className={styles.members}>
-        {teamData.users.map((el) => (
-          <MemberItem userData={el} />
+        {teamData.users.map((el, i) => (
+          <MemberItem key={el.email + i} userData={el} currentUser={userData} />
         ))}
         <div className={styles.add} onClick={() => setModalOpen(true)}>
           + Add user

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Button from "../../../../components/Button/Button";
-import ModalWrapper from "../../../../components/ModalWrapper/ModalWrapper";
-import { TeamUserDataType } from "../../../../models";
+import Button from "../../../components/Button/Button";
+import ModalWrapper from "../../../components/ModalWrapper/ModalWrapper";
+import { TeamUserDataType } from "../../../models";
 
 import styles from "./AddUserModal.module.scss";
 
@@ -26,6 +26,7 @@ const AddUserModal: React.FC<Props> = ({ modalOpen, closeModal, addUser }) => {
       photoURL: "",
       uid: "",
       verified: false,
+      owner: false,
     };
     addUser(data);
     handleCloseModal();

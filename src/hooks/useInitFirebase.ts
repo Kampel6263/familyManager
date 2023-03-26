@@ -20,7 +20,6 @@ const useInitFirebase = () => {
     appId: REACT_APP_ID,
   };
 
-  console.log(firebaseConfig, "firebaseConfig");
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
   return { app, analytics };

@@ -19,6 +19,15 @@
     background: #000;
     color: #fff;
   }
+  &.primary {
+    background: #fff;
+    color: #000;
+    border-color: transparent;
+    box-shadow: 0 1px 0 #dce5ef, 0 1px 4px rgba(9, 8, 61, 0.08);
+    &:hover {
+      box-shadow: 0 1px 0 #dce5ef, 0 1px 4px rgba(9, 8, 61, 0.2);
+    }
+  }
   &.secondary {
     background: #000;
     color: #fff;

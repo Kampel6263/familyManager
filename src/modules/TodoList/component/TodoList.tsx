@@ -89,12 +89,14 @@ const TodoList: React.FC<Props> = ({ data, teamId, setData }) => {
             {doneItemsCount}/{data.length}
           </b>
           &nbsp;
-          <span>({((doneItemsCount / data.length) * 100).toFixed(1)}%)</span>
+          <span>
+            ({((doneItemsCount / data.length) * 100 || 0).toFixed(1)}%)
+          </span>
         </div>
         <div
           className={styles.bar}
           style={{
-            width: scrollWidth * (doneItemsCount / data.length),
+            width: scrollWidth * (doneItemsCount / data.length) || 0,
           }}
         ></div>
       </div>

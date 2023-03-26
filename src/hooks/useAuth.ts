@@ -8,9 +8,10 @@ import {
 
 type Props = {
   app: any;
+  clearAppData: () => void;
 };
 
-const useAuth = ({ app }: Props) => {
+const useAuth = ({ app, clearAppData }: Props) => {
   const auth = getAuth(app);
   const [user, setUser] = useState<any>(null);
   useEffect(() => {
@@ -26,7 +27,10 @@ const useAuth = ({ app }: Props) => {
     });
   };
 
-  const logout = () => signOut(auth);
+  const logout = () => {
+    signOut(auth);
+    clearAppData();
+  };
 
   return { user, login, logout };
 };

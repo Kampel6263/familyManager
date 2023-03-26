@@ -17,6 +17,7 @@ const ModalWrapper: React.FC<Props> = ({
 }) => {
   return (
     <Modal
+      ariaHideApp={false}
       isOpen={modalOpen}
       style={{
         content: {

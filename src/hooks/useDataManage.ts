@@ -25,18 +25,30 @@ import useInitFirebase from "./useInitFirebase";
 const useDataManage = () => {
   const { app } = useInitFirebase();
 
-  const { user, login, logout } = useAuth({ app });
-
   // console.log(user, "user");
 
-  const db = getFirestore(app);
-
-  const [appData, setAppData] = useState<AppDataType>({
+  const initialAppData: AppDataType = {
     wishList: null,
     todoList: null,
     sibscribers: null,
     userData: null,
     teamData: null,
+  };
+
+  const db = getFirestore(app);
+
+  const [modalData, setModalData] = useState<{
+    onApplay: () => void;
+    onCancel: () => void;
+    open: boolean;
+    creator: TeamUserDataType;
+  } | null>(null);
+
+  const [appData, setAppData] = useState<AppDataType>(initialAppData);
+
+  const { user, login, logout } = useAuth({
+    app,
+    clearAppData: () => setAppData(initialAppData),
   });
 
   useEffect(() => {
@@ -90,14 +102,14 @@ const useDataManage = () => {
         creatorEmail: appData.userData!.email,
         id: "",
         teamId: appData.userData!.uid,
-        users: [{ displayName, email, photoURL, uid, verified: true }],
+        users: [
+          { displayName, email, photoURL, uid, verified: true, owner: true },
+        ],
       };
-      console.log("settt", teamData);
+
       setData({ data: data || teamData, query: DatabaseQueryEnum.TEAMS });
     }
   };
-
-  const test = () => {};
 
   const getTeamData = async () => {
     const userId = appData.userData!.uid;
@@ -108,42 +120,65 @@ const useDataManage = () => {
       data.push({ ...doc.data(), id: doc.id });
     });
 
-    const myTeamData = data.find(
-      (el) => el.teamId === userId || el.users.find((el) => el.email === email)
+    const myTeam = data.find((el) => el.teamId === userId);
+
+    const otherTeam = data.find((el) =>
+      el.users.find((user) => !user.owner && user.email === email)
     );
-
-    if (myTeamData?.teamId) {
-      if (myTeamData.teamId !== userId) {
-        const userData = myTeamData.users.find((el) => el.email === email);
-
-        if (!userData?.verified) {
+    console.log(otherTeam, "otherTeam");
+    if (otherTeam?.id) {
+      const teamUser = otherTeam.users.find((el) => el.email === email);
+      if (teamUser?.verified) {
+        setAppData({ ...appData, teamData: otherTeam });
+      } else {
+        const onApplay = () => {
           setTeam({
-            ...myTeamData,
-            users: myTeamData.users.map((el) =>
-              el.email === email && !el.verified
+            ...otherTeam,
+            users: otherTeam.users.map((el) =>
+              el.email === teamUser?.email
                 ? {
                     displayName: appData.userData!.displayName,
                     photoURL: appData.userData!.photoURL,
                     uid: userId,
                     verified: true,
                     email: el.email,
+                    owner: el.owner,
                   }
                 : el
             ),
           });
-          const oldTeam = data.find((el) => el.teamId === userId);
-          if (oldTeam?.id) {
-            setData({ data: oldTeam.id, query: DatabaseQueryEnum.TEAMS });
+          if (myTeam?.id) {
+            setData({ data: myTeam.id, query: DatabaseQueryEnum.TEAMS });
           }
-        }
+          setModalData(null);
+        };
+
+        const onCancel = () => {
+          setTeam({
+            ...otherTeam,
+            users: otherTeam.users.filter((el) => el.email !== email),
+          });
+          setModalData(null);
+        };
+
+        setModalData({
+          onApplay: () => onApplay(),
+          open: true,
+          creator: otherTeam.users.find(
+            (el) => el.email === otherTeam.creatorEmail
+          )!,
+          onCancel: () => onCancel(),
+        });
       }
-      setAppData({ ...appData, teamData: myTeamData });
+    } else if (myTeam?.id) {
+      setAppData({ ...appData, teamData: myTeam });
     } else {
       setTeam();
     }
   };
 
   const addUser = (data: TeamUserDataType) => {
+    // remove all teams for this user
     if (appData.teamData) {
       const teamData = appData.teamData;
       setTeam({ ...teamData, users: [...teamData.users, data] });
@@ -152,8 +187,6 @@ const useDataManage = () => {
 
   useEffect(() => {
     if (appData.userData?.uid) {
-      console.log("get team data");
-
       getTeamData();
     }
   }, [appData.userData?.uid]);
@@ -204,7 +237,7 @@ const useDataManage = () => {
     }
   }, [appData.teamData?.teamId]);
 
-  return { appData, setData, login, logout, addUser };
+  return { appData, modalData, setData, login, logout, addUser };
 };
 
 export default useDataManage;

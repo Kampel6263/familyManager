@@ -93,7 +93,9 @@ const SibscribersModal: React.FC<Props> = ({
                 Select service
               </option>
               {services.map((el, i) => (
-                <option value={el.value}>{el.label}</option>
+                <option value={el.value} key={el.value + i}>
+                  {el.label}
+                </option>
               ))}
             </select>
           </div>
@@ -125,7 +127,8 @@ const SibscribersModal: React.FC<Props> = ({
               Number.isNaN(+formData.cost) ||
               !formData.cost ||
               Number.isNaN(+formData.monthNumber) ||
-              !formData.monthNumber
+              !formData.monthNumber ||
+              !formData.type
             }
           />
 
