@@ -1,36 +1,41 @@
 import styles from "./Loader.module.scss";
 import Animation from "../../assets/globalImgs/Growing flower.gif";
 import { useEffect, useState } from "react";
-type Props = {};
+import { LoadingState } from "../../models";
+type Props = {
+  state: LoadingState;
+};
 
-const Loader: React.FC<Props> = () => {
+const Loader: React.FC<Props> = ({ state }) => {
   const [message, setMessage] = useState<
-    "Loading..." | "This may take some time..." | "No data"
+    "Loading..." | "This may take a while..." | "No data"
   >("Loading...");
 
   useEffect(() => {
-    const firstTime = 3000;
-    const secondTime = 4000;
+    if (state === LoadingState.LOADING) {
+      const firstTime = 7000;
 
-    const timeout1 = setTimeout(() => {
-      setMessage("This may take some time...");
-    }, firstTime);
-    const timeout2 = setTimeout(() => {
+      const timeout1 = setTimeout(() => {
+        setMessage("This may take a while...");
+      }, firstTime);
+
+      return () => {
+        clearTimeout(timeout1);
+      };
+    } else if (state === LoadingState.NO_DATA) {
       setMessage("No data");
-    }, firstTime + secondTime);
-    return () => {
-      clearTimeout(timeout1);
-      clearTimeout(timeout2);
-    };
-  }, []);
+    }
+  }, [state]);
 
-  return (
+  return state !== LoadingState.LOADED ? (
     <div className={styles.loader}>
       <div className={styles.content}>
         {message !== "No data" && <img src={Animation} alt="" />}
         <span>{message}</span>
       </div>
     </div>
+  ) : (
+    <></>
   );
 };
 

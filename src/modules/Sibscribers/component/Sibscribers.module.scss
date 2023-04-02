@@ -16,6 +16,10 @@
   justify-content: space-between;
 }
 
+.table {
+  max-height: calc(100% - 44px);
+}
+
 .action {
   display: flex;
   width: 100%;

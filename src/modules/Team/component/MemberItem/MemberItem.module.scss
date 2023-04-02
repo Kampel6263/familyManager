@@ -38,3 +38,15 @@
     border: 1px solid rgb(44, 216, 82);
   }
 }
+
+.role {
+  font-size: 11px;
+  line-height: 11px;
+
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border: 1px solid #333;
+  width: fit-content;
+  border-radius: 4px;
+  margin: 4px auto 0;
+}

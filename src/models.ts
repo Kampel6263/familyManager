@@ -3,6 +3,7 @@ export enum DatabaseQueryEnum {
   TODO_LIST = "todo-list",
   SIBSCRIBERS = "sibscribers",
   TEAMS = "teams",
+  PETS = "pets",
 }
 
 export enum PriorityEnum {
@@ -20,13 +21,14 @@ export type WishListType = {
   sum: number;
   type: TypeFilter;
   done: boolean;
-  id?: string;
+  id: string;
 };
 
 export type TodoListDataType = {
-  name: string;
-  done: boolean;
-  id?: string;
+  categoryName: string;
+  categoryColor: string;
+  data: { name: string; done: boolean }[];
+  id: string;
 };
 
 export type ServiceType = {
@@ -40,7 +42,7 @@ export type SibscribersDataType = {
   type: string;
   cost: number;
   monthNumber: number;
-  id?: string;
+  id: string;
 };
 
 export interface UserDataType {
@@ -61,17 +63,63 @@ export type TeamDataType = {
   creatorEmail: string;
   id: string;
 };
+export type PillsHistory = {
+  name: string;
+  date: string;
+  fleas: boolean;
+  worms: boolean;
+  mites: boolean;
+};
+
+export type PetsDataType = {
+  name: string;
+  birthday: string;
+  sex: string;
+  breed: string;
+  petType: string;
+  lastVaccination: string;
+  nextVaccination: string;
+  pillsData: PillsHistory[];
+  id: string;
+};
+
+export enum LoadingState {
+  LOADING,
+  LOADED,
+  NO_DATA,
+}
 
 export type AppDataType = {
-  wishList: WishListType[] | null;
-  todoList: TodoListDataType[] | null;
-  sibscribers: SibscribersDataType[] | null;
-  userData: UserDataType | null;
-  teamData: TeamDataType | null;
+  wishListData: {
+    data: WishListType[] | null;
+    state: LoadingState;
+  };
+
+  todoListData: {
+    data: TodoListDataType[] | null;
+    state: LoadingState;
+  };
+
+  sibscribersData: {
+    data: SibscribersDataType[] | null;
+    state: LoadingState;
+  };
+  userData: {
+    data: UserDataType | null;
+    state: LoadingState;
+  };
+  petsData: {
+    data: PetsDataType[] | null;
+    state: LoadingState;
+  };
+  teamData: {
+    data: TeamDataType | null;
+    state: LoadingState;
+  };
 };
 
 export type setDataType = {
   query: DatabaseQueryEnum;
-  teamId?: string;
+  teamId?: boolean;
   data: any;
 };

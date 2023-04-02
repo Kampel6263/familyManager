@@ -4,6 +4,7 @@ import PriorityTag from "../../../components/PriorityTag/PriorityTag";
 import Table from "../../../components/Table/Table";
 import {
   DatabaseQueryEnum,
+  LoadingState,
   PriorityEnum,
   setDataType,
   TypeFilter,
@@ -42,6 +43,7 @@ const WishList: React.FC<Props> = ({ data, teamId, setData }) => {
     sum: 0,
     type: "general",
     done: false,
+    id: "",
   };
   const [formData, setFormData] = useState<WishListType>(initialFormData);
 
@@ -83,7 +85,7 @@ const WishList: React.FC<Props> = ({ data, teamId, setData }) => {
   }, 0);
   const allData = [...filteredOpenedData, ...filteredComplateData];
   return (
-    <div>
+    <>
       <div className={styles.header}>
         <h2>Wish list</h2>
         <div>
@@ -111,62 +113,65 @@ const WishList: React.FC<Props> = ({ data, teamId, setData }) => {
       </div>
 
       <Table
-        loading={!allData || allData.length === 0}
+        className={styles.table}
+        state={!allData.length ? LoadingState.NO_DATA : LoadingState.LOADED}
         children={
-          <>
-            <div className={styles.item}>
-              <div>Name</div>
-              <div>Type</div>
-              <div>Priority</div>
-              <div>Sum(UAH)</div>
-              <div>Actions</div>
-            </div>
-            {allData.map((el, i) => (
-              <div
-                key={el.name + i}
-                className={classNames(styles.item, el.done && styles.done)}
-              >
-                <div>{el.name}</div>
-                <div>{el.type}</div>
-                <PriorityTag priority={el.priority} />
-                <div>{formatValue(el.sum, "₴")}</div>
-                <div className={styles.action}>
-                  <span
-                    className={el.done ? styles.done : ""}
-                    onClick={() => {
-                      setFormData(el);
-                      setModalOpen(true);
-                    }}
-                  >
-                    Edit
-                  </span>
-                  <span
-                    className={el.done ? styles.done : ""}
-                    onClick={() => {
-                      setData({
-                        query: DatabaseQueryEnum.WISH_LIST,
-                        data: el.id,
-                        teamId,
-                      });
-                    }}
-                  >
-                    Delete
-                  </span>
-                  <span
-                    onClick={() => {
-                      setData({
-                        query: DatabaseQueryEnum.WISH_LIST,
-                        data: { ...el, done: !el.done },
-                        teamId,
-                      });
-                    }}
-                  >
-                    {el.done ? "⤽" : "✓"}
-                  </span>
-                </div>
+          !!allData.length && (
+            <>
+              <div className={styles.item}>
+                <div>Name</div>
+                <div>Type</div>
+                <div>Priority</div>
+                <div>Sum(UAH)</div>
+                <div>Actions</div>
               </div>
-            ))}
-          </>
+              {allData.map((el, i) => (
+                <div
+                  key={el.name + i}
+                  className={classNames(styles.item, el.done && styles.done)}
+                >
+                  <div>{el.name}</div>
+                  <div>{el.type}</div>
+                  <PriorityTag priority={el.priority} />
+                  <div>{formatValue(el.sum, "₴")}</div>
+                  <div className={styles.action}>
+                    <span
+                      className={el.done ? styles.done : ""}
+                      onClick={() => {
+                        setFormData(el);
+                        setModalOpen(true);
+                      }}
+                    >
+                      Edit
+                    </span>
+                    <span
+                      className={el.done ? styles.done : ""}
+                      onClick={() => {
+                        setData({
+                          query: DatabaseQueryEnum.WISH_LIST,
+                          data: el.id,
+                          teamId: true,
+                        });
+                      }}
+                    >
+                      Delete
+                    </span>
+                    <span
+                      onClick={() => {
+                        setData({
+                          query: DatabaseQueryEnum.WISH_LIST,
+                          data: { ...el, done: !el.done },
+                          teamId: true,
+                        });
+                      }}
+                    >
+                      {el.done ? "⤽" : "✓"}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </>
+          )
         }
       />
       <WishListModal
@@ -178,7 +183,7 @@ const WishList: React.FC<Props> = ({ data, teamId, setData }) => {
         setData={setData}
         setFormData={setFormData}
       />
-    </div>
+    </>
   );
 };
 

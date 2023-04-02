@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import {
   AppDataType,
   DatabaseQueryEnum,
+  LoadingState,
   setDataType,
   SibscribersDataType,
   TeamDataType,
@@ -21,28 +22,40 @@ import {
 import useAuth from "./useAuth";
 
 import useInitFirebase from "./useInitFirebase";
+import usePetsData from "./usePetsData";
+import useTeamData from "./useTeamData";
 
 const useDataManage = () => {
   const { app } = useInitFirebase();
 
-  // console.log(user, "user");
-
   const initialAppData: AppDataType = {
-    wishList: null,
-    todoList: null,
-    sibscribers: null,
-    userData: null,
-    teamData: null,
+    wishListData: {
+      data: null,
+      state: LoadingState.LOADING,
+    },
+    todoListData: {
+      data: null,
+      state: LoadingState.LOADING,
+    },
+    sibscribersData: {
+      data: null,
+      state: LoadingState.LOADING,
+    },
+    userData: {
+      data: null,
+      state: LoadingState.LOADING,
+    },
+    teamData: {
+      data: null,
+      state: LoadingState.LOADING,
+    },
+    petsData: {
+      data: null,
+      state: LoadingState.LOADING,
+    },
   };
 
   const db = getFirestore(app);
-
-  const [modalData, setModalData] = useState<{
-    onApplay: () => void;
-    onCancel: () => void;
-    open: boolean;
-    creator: TeamUserDataType;
-  } | null>(null);
 
   const [appData, setAppData] = useState<AppDataType>(initialAppData);
 
@@ -52,12 +65,15 @@ const useDataManage = () => {
   });
 
   useEffect(() => {
-    setAppData({ ...appData, userData: user });
+    setAppData({
+      ...appData,
+      userData: { data: user, state: LoadingState.LOADED },
+    });
   }, [user]);
 
   const getData = async (databaseQuery: DatabaseQueryEnum) => {
     const querySnapshot = await getDocs(
-      collection(db, `${databaseQuery}-${appData.teamData!.teamId}`)
+      collection(db, `${databaseQuery}-${appData.teamData.data!.teamId}`)
     );
     return querySnapshot;
   };
@@ -66,17 +82,28 @@ const useDataManage = () => {
     try {
       if (typeof data === "string") {
         return await deleteDoc(
-          doc(db, `${query}${teamId ? "-" + teamId : ""}`, data)
+          doc(
+            db,
+            `${query}${teamId ? "-" + appData.teamData.data!.teamId : ""}`,
+            data
+          )
         );
       }
       if (data?.id) {
         await updateDoc(
-          doc(db, `${query}${teamId ? "-" + teamId : ""}`, data.id),
+          doc(
+            db,
+            `${query}${teamId ? "-" + appData.teamData.data!.teamId : ""}`,
+            data.id
+          ),
           data
         );
       } else {
         await addDoc(
-          collection(db, `${query}${teamId ? "-" + teamId : ""}`),
+          collection(
+            db,
+            `${query}${teamId ? "-" + appData.teamData.data!.teamId : ""}`
+          ),
           data
         );
       }
@@ -91,105 +118,24 @@ const useDataManage = () => {
           return await getSibscribersData();
         case DatabaseQueryEnum.TEAMS:
           return await getTeamData();
+        case DatabaseQueryEnum.PETS:
+          return await getPetsData();
       }
     }
   };
+  const { modalData, getTeamData, addUser } = useTeamData({
+    appData,
+    db,
+    setAppData,
+    setData,
+  });
 
-  const setTeam = (data?: TeamDataType) => {
-    if (appData.userData) {
-      const { displayName, email, photoURL, uid } = appData.userData;
-      const teamData: TeamDataType = {
-        creatorEmail: appData.userData!.email,
-        id: "",
-        teamId: appData.userData!.uid,
-        users: [
-          { displayName, email, photoURL, uid, verified: true, owner: true },
-        ],
-      };
-
-      setData({ data: data || teamData, query: DatabaseQueryEnum.TEAMS });
-    }
-  };
-
-  const getTeamData = async () => {
-    const userId = appData.userData!.uid;
-    const email = appData.userData!.email;
-    const result: any = await getDocs(collection(db, DatabaseQueryEnum.TEAMS));
-    const data: TeamDataType[] = [];
-    result.forEach((doc: any) => {
-      data.push({ ...doc.data(), id: doc.id });
-    });
-
-    const myTeam = data.find((el) => el.teamId === userId);
-
-    const otherTeam = data.find((el) =>
-      el.users.find((user) => !user.owner && user.email === email)
-    );
-    console.log(otherTeam, "otherTeam");
-    if (otherTeam?.id) {
-      const teamUser = otherTeam.users.find((el) => el.email === email);
-      if (teamUser?.verified) {
-        setAppData({ ...appData, teamData: otherTeam });
-      } else {
-        const onApplay = () => {
-          setTeam({
-            ...otherTeam,
-            users: otherTeam.users.map((el) =>
-              el.email === teamUser?.email
-                ? {
-                    displayName: appData.userData!.displayName,
-                    photoURL: appData.userData!.photoURL,
-                    uid: userId,
-                    verified: true,
-                    email: el.email,
-                    owner: el.owner,
-                  }
-                : el
-            ),
-          });
-          if (myTeam?.id) {
-            setData({ data: myTeam.id, query: DatabaseQueryEnum.TEAMS });
-          }
-          setModalData(null);
-        };
-
-        const onCancel = () => {
-          setTeam({
-            ...otherTeam,
-            users: otherTeam.users.filter((el) => el.email !== email),
-          });
-          setModalData(null);
-        };
-
-        setModalData({
-          onApplay: () => onApplay(),
-          open: true,
-          creator: otherTeam.users.find(
-            (el) => el.email === otherTeam.creatorEmail
-          )!,
-          onCancel: () => onCancel(),
-        });
-      }
-    } else if (myTeam?.id) {
-      setAppData({ ...appData, teamData: myTeam });
-    } else {
-      setTeam();
-    }
-  };
-
-  const addUser = (data: TeamUserDataType) => {
-    // remove all teams for this user
-    if (appData.teamData) {
-      const teamData = appData.teamData;
-      setTeam({ ...teamData, users: [...teamData.users, data] });
-    }
-  };
-
+  const { getPetsData } = usePetsData({ getData, setAppData });
   useEffect(() => {
-    if (appData.userData?.uid) {
+    if (appData.userData.data?.uid) {
       getTeamData();
     }
-  }, [appData.userData?.uid]);
+  }, [appData.userData?.data?.uid]);
 
   const getWishListData = async () => {
     const result: any = await getData(DatabaseQueryEnum.WISH_LIST);
@@ -199,7 +145,13 @@ const useDataManage = () => {
       data.push({ ...doc.data(), id: doc.id });
     });
 
-    setAppData((prevState) => ({ ...prevState, wishList: data }));
+    setAppData((prevState) => ({
+      ...prevState,
+      wishListData: {
+        data: data,
+        state: data.length ? LoadingState.LOADED : LoadingState.NO_DATA,
+      },
+    }));
   };
 
   const getTodoListData = async () => {
@@ -210,7 +162,13 @@ const useDataManage = () => {
       data.push({ ...doc.data(), id: doc.id });
     });
 
-    setAppData((prevState) => ({ ...prevState, todoList: data }));
+    setAppData((prevState) => ({
+      ...prevState,
+      todoListData: {
+        data: data,
+        state: data.length ? LoadingState.LOADED : LoadingState.NO_DATA,
+      },
+    }));
   };
   const getSibscribersData = async () => {
     const result: any = await getData(DatabaseQueryEnum.SIBSCRIBERS);
@@ -220,7 +178,13 @@ const useDataManage = () => {
       data.push({ ...doc.data(), id: doc.id });
     });
 
-    setAppData((prevState) => ({ ...prevState, sibscribers: data }));
+    setAppData((prevState) => ({
+      ...prevState,
+      sibscribersData: {
+        data: data,
+        state: data.length ? LoadingState.LOADED : LoadingState.NO_DATA,
+      },
+    }));
   };
 
   const getAllData = async () => {
@@ -228,14 +192,15 @@ const useDataManage = () => {
       await getWishListData(),
       await getTodoListData(),
       await getSibscribersData(),
+      await getPetsData(),
     ]);
   };
 
   useEffect(() => {
-    if (appData.teamData?.teamId) {
+    if (appData.teamData.data?.teamId) {
       getAllData();
     }
-  }, [appData.teamData?.teamId]);
+  }, [appData.teamData.data?.teamId]);
 
   return { appData, modalData, setData, login, logout, addUser };
 };

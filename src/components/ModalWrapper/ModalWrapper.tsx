@@ -13,7 +13,7 @@ const ModalWrapper: React.FC<Props> = ({
   modalOpen,
   children,
   height = 200,
-  width = 400,
+  width = 440,
 }) => {
   return (
     <Modal

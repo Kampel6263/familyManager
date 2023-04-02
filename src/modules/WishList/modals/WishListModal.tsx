@@ -55,7 +55,7 @@ const WishListModal: React.FC<Props> = ({
     setData({
       query: DatabaseQueryEnum.WISH_LIST,
       data: { ...formData, sum: +formData.sum },
-      teamId,
+      teamId: true,
     });
     handleCloseModal();
   };
@@ -64,7 +64,7 @@ const WishListModal: React.FC<Props> = ({
     setFormData({ ...formData, [key]: value });
   };
   return (
-    <ModalWrapper modalOpen={modalOpen}>
+    <ModalWrapper modalOpen={modalOpen} height={230}>
       <div className={styles.modal}>
         <h3>Add a new wish</h3>
         <div className={styles.form}>

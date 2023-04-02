@@ -1,8 +1,10 @@
 .loader {
   position: relative;
-  height: 450px;
+  min-height: 280px;
+  height: auto;
   width: 100%;
   background: #fff;
+  border-radius: 8px;
 }
 
 .content {

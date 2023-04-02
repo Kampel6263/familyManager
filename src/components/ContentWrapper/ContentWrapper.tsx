@@ -1,13 +1,20 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { AppDataType, setDataType, TeamUserDataType } from "../../models";
+import {
+  AppDataType,
+  LoadingState,
+  setDataType,
+  TeamUserDataType,
+} from "../../models";
 import Login from "../../modules/Login/component/Login";
+import Pets from "../../modules/Pets/component/Pets";
 import Sibscribers from "../../modules/Sibscribers/component/Sibscribers";
 import Team from "../../modules/Team/component/Team";
 import TodoList from "../../modules/TodoList/component/TodoList";
 import WishList from "../../modules/WishList/component/WishList";
 import Loader from "../Loader/Loader";
 import styles from "./ContentWrapper.module.scss";
+import RouteWrapper from "../RouteWrapper/RouteWrapper";
 
 type Props = {
   setData: (data: setDataType) => void;
@@ -24,55 +31,85 @@ const ContentWrapper: React.FC<Props> = ({
 }) => {
   return (
     <div className={styles.content}>
-      {appData?.userData?.uid ? (
+      {appData?.userData.data?.uid ? (
         <>
-          {appData.teamData?.teamId ? (
+          {appData.teamData.data?.teamId ? (
             <Routes>
               <Route path="/" element={<Navigate to={"wish-list"} />} />
               <Route
                 path="wish-list"
                 element={
-                  <WishList
-                    setData={setData}
-                    data={appData.wishList || []}
-                    teamId={appData.teamData?.teamId || ""}
-                  />
+                  <RouteWrapper state={appData.wishListData.state}>
+                    <WishList
+                      setData={setData}
+                      data={appData.wishListData.data || []}
+                      teamId={appData.teamData.data?.teamId || ""}
+                    />
+                  </RouteWrapper>
                 }
               />
               <Route
                 path="todo-list"
                 element={
-                  <TodoList
-                    setData={setData}
-                    data={appData.todoList || []}
-                    teamId={appData.teamData?.teamId || ""}
-                  />
+                  <RouteWrapper state={appData.todoListData.state}>
+                    <TodoList
+                      setData={setData}
+                      data={appData.todoListData.data || []}
+                      teamId={appData.teamData.data?.teamId || ""}
+                    />
+                  </RouteWrapper>
                 }
               />
               <Route
                 path="sibscribers"
                 element={
-                  <Sibscribers
-                    setData={setData}
-                    data={appData.sibscribers || []}
-                    teamId={appData?.teamData?.teamId || ""}
-                  />
+                  <RouteWrapper state={appData.sibscribersData.state}>
+                    <Sibscribers
+                      setData={setData}
+                      data={appData.sibscribersData.data || []}
+                      teamId={appData?.teamData.data?.teamId || ""}
+                    />
+                  </RouteWrapper>
+                }
+              />
+              <Route
+                path="pets"
+                element={
+                  <RouteWrapper state={appData.petsData.state}>
+                    <Pets
+                      petsData={appData.petsData.data || []}
+                      setData={setData}
+                    />
+                  </RouteWrapper>
+                }
+              />
+              <Route
+                path="pets/:tab"
+                element={
+                  <RouteWrapper state={appData.petsData.state}>
+                    <Pets
+                      petsData={appData.petsData.data || []}
+                      setData={setData}
+                    />
+                  </RouteWrapper>
                 }
               />
               <Route
                 path="team"
                 element={
-                  <Team
-                    teamData={appData.teamData}
-                    userData={appData.userData}
-                    addUser={addUser}
-                  />
+                  <RouteWrapper state={appData.teamData.state}>
+                    <Team
+                      teamData={appData.teamData.data}
+                      userData={appData.userData.data}
+                      addUser={addUser}
+                    />
+                  </RouteWrapper>
                 }
               />
               Team
             </Routes>
           ) : (
-            <Loader />
+            <Loader state={LoadingState.LOADING} />
           )}
         </>
       ) : (

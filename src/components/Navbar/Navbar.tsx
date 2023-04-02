@@ -4,6 +4,7 @@ import { ReactComponent as Todo } from "../../assets/navbar/todo.svg";
 import { ReactComponent as CollapsSvg } from "../../assets/navbar/collapse-left.svg";
 import { ReactComponent as Sibscribers } from "../../assets/navbar/subscribe.svg";
 import { ReactComponent as Team } from "../../assets/navbar/team-svgrepo-com.svg";
+import { ReactComponent as Pets } from "../../assets//navbar/pets.svg";
 
 import { NavLink } from "react-router-dom";
 import classNames from "classnames";
@@ -26,13 +27,18 @@ const Navbar: React.FC<Props> = () => {
     },
     {
       path: "todo-list",
-      label: "Todo list",
+      label: "To Do list",
       iconSvg: Todo,
     },
     {
       path: "sibscribers",
       label: "Sibscribers",
       iconSvg: Sibscribers,
+    },
+    {
+      path: "pets",
+      label: "Pets",
+      iconSvg: Pets,
     },
     {
       path: "team",
@@ -61,7 +67,7 @@ const Navbar: React.FC<Props> = () => {
         <CollapsSvg className={open ? "" : styles.collaps} />{" "}
         {open && <span>Collaps</span>}
       </div>
-      <div className={styles.version}>v_1.3</div>
+      <div className={styles.version}>v_2.0</div>
     </div>
   );
 };

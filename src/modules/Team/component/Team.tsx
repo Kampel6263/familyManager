@@ -12,13 +12,20 @@ type Props = {
 
 const Team: React.FC<Props> = ({ teamData, userData, addUser }) => {
   const [modalOpen, setModalOpen] = useState(false);
-
+  const data = [
+    teamData.users.find((el) => el.email === userData.email),
+    ...teamData.users.filter((el) => el.email !== userData.email),
+  ];
   return (
     <div>
-      <h3>Team</h3>
+      <h2>Team</h2>
       <div className={styles.members}>
-        {teamData.users.map((el, i) => (
-          <MemberItem key={el.email + i} userData={el} currentUser={userData} />
+        {data.map((el, i) => (
+          <MemberItem
+            key={el!.email + i}
+            userData={el!}
+            currentUser={userData}
+          />
         ))}
         <div className={styles.add} onClick={() => setModalOpen(true)}>
           + Add user

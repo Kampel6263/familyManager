@@ -18,6 +18,7 @@ const MemberItem: React.FC<Props> = ({ userData, currentUser }) => {
           {userData.displayName || userData.email}
           {currentUser.email === userData.email ? "(You)" : ""}
         </div>
+        <div className={styles.role}>{userData.owner ? "Admin" : "User"}</div>
       </div>
       <div
         className={classNames(

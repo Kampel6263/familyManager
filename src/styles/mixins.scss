@@ -11,7 +11,7 @@
   column-gap: 10px;
   &:nth-child(2n-1) {
     &:not(:first-child) {
-      background: rgb(241, 245, 248);
+      background: rgba(241, 245, 248, 0.6);
     }
   }
   &.done {
@@ -20,6 +20,9 @@
   }
   &:first-child {
     border-bottom: 1px solid #00000021;
+    position: sticky;
+    background-color: #fff;
+    top: 0;
   }
   span.done {
     pointer-events: none;
@@ -29,7 +32,8 @@
 
 @mixin tableButton {
   padding: 2px 4px;
-  background: #000;
+  min-width: 30px;
+  background: var(---black);
   color: #fff;
   display: block;
   cursor: pointer;

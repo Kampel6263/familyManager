@@ -12,7 +12,7 @@ const App: React.FC = () => {
     useDataManage();
   return (
     <div className={styles.app}>
-      <Header userData={appData.userData} logout={logout} />
+      <Header userData={appData.userData.data} logout={logout} />
       <div className={styles.block}>
         {appData?.userData && <Navbar />}
 

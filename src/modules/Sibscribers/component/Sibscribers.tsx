@@ -5,6 +5,7 @@ import { services } from "../../../constants";
 import { formatValue, totalSum } from "../../../helpers";
 import {
   DatabaseQueryEnum,
+  LoadingState,
   setDataType,
   SibscribersDataType,
 } from "../../../models";
@@ -14,15 +15,21 @@ import styles from "./Sibscribers.module.scss";
 type Props = {
   data: SibscribersDataType[];
   teamId: string;
+
   setData: (data: setDataType) => void;
 };
 
-const Sibscribers: React.FC<Props> = ({ data, teamId, setData }) => {
+const Sibscribers: React.FC<Props> = ({
+  data,
+  teamId,
+
+  setData,
+}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState<SibscribersDataType | undefined>();
 
   return (
-    <div>
+    <>
       <div className={styles.header}>
         <h2>
           Sibscribers {formatValue(totalSum({ data: data, key: "cost" }), "₴")}
@@ -31,6 +38,7 @@ const Sibscribers: React.FC<Props> = ({ data, teamId, setData }) => {
       </div>
 
       <Table
+        className={styles.table}
         children={
           <>
             <div className={styles.item}>
@@ -40,52 +48,61 @@ const Sibscribers: React.FC<Props> = ({ data, teamId, setData }) => {
               <div>Cost(UAH)</div>
               <div>Actions</div>
             </div>
-            {data.map((el, i) => {
-              const serviceData = services.find(
-                (service) => service.value === el.type
-              );
-              return (
-                <div key={el.service + i} className={styles.item}>
-                  <div className={styles.service}>
-                    <img
-                      className={styles.serviceImg}
-                      src={serviceData?.img}
-                      alt=""
-                    />
-                    <span>
-                      {serviceData?.label} {el.service && ` - ${el.service}`}
-                    </span>
+            {data
+              .sort((a, b) => {
+                if (a.monthNumber > b.monthNumber) {
+                  return -1;
+                } else if (a.monthNumber > b.monthNumber) {
+                  return 1;
+                }
+                return 0;
+              })
+              .map((el, i) => {
+                const serviceData = services.find(
+                  (service) => service.value === el.type
+                );
+                return (
+                  <div key={el.service + i} className={styles.item}>
+                    <div className={styles.service}>
+                      <img
+                        className={styles.serviceImg}
+                        src={serviceData?.img}
+                        alt=""
+                      />
+                      <span>
+                        {serviceData?.label} {el.service && ` - ${el.service}`}
+                      </span>
+                    </div>
+                    <div>{el.monthNumber}</div>
+                    <div>{31 - el.monthNumber}</div>
+                    <div>{formatValue(el.cost, "₴")}</div>
+                    <div className={styles.action}>
+                      <span
+                        onClick={() => {
+                          setEditItem(el);
+                          setModalOpen(true);
+                        }}
+                      >
+                        Edit
+                      </span>
+                      <span
+                        onClick={() => {
+                          setData({
+                            query: DatabaseQueryEnum.SIBSCRIBERS,
+                            data: el.id,
+                            teamId: true,
+                          });
+                        }}
+                      >
+                        Delete
+                      </span>
+                    </div>
                   </div>
-                  <div>{el.monthNumber}</div>
-                  <div>{31 - el.monthNumber}</div>
-                  <div>{formatValue(el.cost, "₴")}</div>
-                  <div className={styles.action}>
-                    <span
-                      onClick={() => {
-                        setEditItem(el);
-                        setModalOpen(true);
-                      }}
-                    >
-                      Edit
-                    </span>
-                    <span
-                      onClick={() => {
-                        setData({
-                          query: DatabaseQueryEnum.SIBSCRIBERS,
-                          data: el.id,
-                          teamId,
-                        });
-                      }}
-                    >
-                      Delete
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </>
         }
-        loading={!data || !data.length}
+        state={data.length ? LoadingState.LOADED : LoadingState.NO_DATA}
       />
       <SibscribersModal
         modalOpen={modalOpen}
@@ -95,7 +112,7 @@ const Sibscribers: React.FC<Props> = ({ data, teamId, setData }) => {
         modalData={editItem}
         closeModal={() => setModalOpen(false)}
       />
-    </div>
+    </>
   );
 };
 

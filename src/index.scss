@@ -6,6 +6,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: rgb(241, 245, 248);
+
+  ---black: #1b1616;
+  --border: 1px solid #d3dfeb;
+  color: var(---black);
 }
 
 code {
@@ -15,7 +19,7 @@ code {
 
 h2 {
   font-size: 20px;
-  margin-top: 10px;
+  margin-top: 0px;
 }
 
 input,
@@ -25,8 +29,31 @@ select {
   border-radius: 4px;
   font-size: 16px;
   padding: 6px 15px;
+  background-color: transparent;
 }
 
 select {
   padding-right: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.scrollbar {
+  &::-webkit-scrollbar {
+    width: 2px;
+    border-radius: 4px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #8888889a;
+    border-radius: 4px;
+  }
 }

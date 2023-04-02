@@ -51,7 +51,7 @@ const SibscribersModal: React.FC<Props> = ({
         monthNumber: +formData.monthNumber,
         cost: +formData.cost,
       },
-      teamId,
+      teamId: true,
     });
     setFormData(initialModalData);
     handleClose();
@@ -68,7 +68,7 @@ const SibscribersModal: React.FC<Props> = ({
   };
 
   return (
-    <ModalWrapper modalOpen={modalOpen} height={185}>
+    <ModalWrapper modalOpen={modalOpen} height={227}>
       <div className={styles.modal}>
         <h3>Add a new sibscribe</h3>
         <div className={styles.form}>

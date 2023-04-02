@@ -1,0 +1,44 @@
+.pillsForm {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 10px;
+}
+.checkboxes {
+  display: flex;
+  justify-content: space-between;
+}
+.checkbox {
+  display: flex;
+  align-items: center;
+  border: var(--border);
+  position: relative;
+  border-radius: 4px;
+
+  input {
+    width: auto;
+    position: absolute;
+    display: block;
+    margin: 0;
+    left: 5px;
+    cursor: pointer;
+  }
+  label {
+    display: flex;
+    align-items: center;
+    padding: 3px;
+    padding-left: 25px;
+    cursor: pointer;
+  }
+  img {
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+  }
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 10px;
+}
