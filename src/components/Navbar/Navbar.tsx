@@ -5,6 +5,7 @@ import { ReactComponent as CollapsSvg } from "../../assets/navbar/collapse-left.
 import { ReactComponent as Sibscribers } from "../../assets/navbar/subscribe.svg";
 import { ReactComponent as Team } from "../../assets/navbar/team-svgrepo-com.svg";
 import { ReactComponent as Pets } from "../../assets//navbar/pets.svg";
+import { ReactComponent as Finance } from "../../assets//navbar/finances.svg";
 
 import { NavLink } from "react-router-dom";
 import classNames from "classnames";
@@ -25,6 +26,7 @@ const Navbar: React.FC<Props> = () => {
       label: "Wish list",
       iconSvg: WishList,
     },
+
     {
       path: "todo-list",
       label: "To Do list",
@@ -35,6 +37,11 @@ const Navbar: React.FC<Props> = () => {
       label: "Sibscribers",
       iconSvg: Sibscribers,
     },
+    // {
+    //   path: "finances/storage",
+    //   label: "Finances",
+    //   iconSvg: Finance,
+    // },
     {
       path: "pets",
       label: "Pets",
@@ -67,7 +74,7 @@ const Navbar: React.FC<Props> = () => {
         <CollapsSvg className={open ? "" : styles.collaps} />{" "}
         {open && <span>Collaps</span>}
       </div>
-      <div className={styles.version}>v_2.0</div>
+      <div className={styles.version}>v_2.1</div>
     </div>
   );
 };

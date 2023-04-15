@@ -28,6 +28,20 @@ const Sibscribers: React.FC<Props> = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState<SibscribersDataType | undefined>();
 
+  const getDaysLeft = (date: number) => {
+    const today = new Date().getDate();
+
+    if (date > today) {
+      return date - today;
+    } else if (date < today) {
+      const year = new Date().getFullYear();
+      const month = new Date().getMonth() + 1;
+      const daysInMonth = new Date(year, month, 0).getDate();
+      return daysInMonth - today + date;
+    }
+    return 0;
+  };
+
   return (
     <>
       <div className={styles.header}>
@@ -74,7 +88,7 @@ const Sibscribers: React.FC<Props> = ({
                       </span>
                     </div>
                     <div>{el.monthNumber}</div>
-                    <div>{31 - el.monthNumber}</div>
+                    <div>{getDaysLeft(el.monthNumber)}</div>
                     <div>{formatValue(el.cost, "₴")}</div>
                     <div className={styles.action}>
                       <span

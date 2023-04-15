@@ -1,4 +1,3 @@
-import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/Button/Button";
@@ -12,9 +11,8 @@ import styles from "./Pets.module.scss";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { getIconByPetType, getPetAge } from "../helpers/main";
+import { getDiffColor, getIconByPetType, getPetAge } from "../helpers/main";
 import PetForm from "./PetForm/PetForm";
-import ModalWrapper from "../../../components/ModalWrapper/ModalWrapper";
 import PillsModadal from "./Modal/PillsModal";
 import classNames from "classnames";
 import Loader from "../../../components/Loader/Loader";
@@ -57,7 +55,19 @@ const CreateViewPet: React.FC<Props> = ({ tab, data, setData }) => {
   const sort = (date1: string, date2: string) => {
     return new Date(date2).getTime() - new Date(date1).getTime();
   };
-  sort("2023-05-06", "2027-10-02");
+  const lastDiff = dayjs(new Date()).diff(
+    dayjs(petData?.lastVaccination),
+    "days"
+  );
+  const lastDiffMonth = dayjs(new Date()).diff(
+    dayjs(petData?.lastVaccination),
+    "month"
+  );
+
+  const nextDiff = dayjs(petData?.nextVaccination).diff(
+    dayjs(new Date()),
+    "days"
+  );
 
   return (
     <>
@@ -113,7 +123,7 @@ const CreateViewPet: React.FC<Props> = ({ tab, data, setData }) => {
               </div>
               <div className={styles.line}>
                 <div>Birthday:</div>
-                <div>{petData?.birthday}</div>
+                <div>{dayjs(petData?.birthday).format("DD, MMMM, YYYY")}</div>
               </div>
 
               <div className={styles.line}>
@@ -121,11 +131,31 @@ const CreateViewPet: React.FC<Props> = ({ tab, data, setData }) => {
               </div>
               <div className={styles.line}>
                 <div>Last vaccination:</div>{" "}
-                <div>{petData?.lastVaccination}</div>
+                <div>
+                  {dayjs(petData?.lastVaccination).format("DD, MMMM, YYYY")}{" "}
+                  <b
+                    className={styles.vaccinationDiff}
+                    style={{ color: getDiffColor(lastDiff, "last", 0.5) }}
+                  >
+                    {lastDiffMonth
+                      ? `${lastDiffMonth} month(s) ago`
+                      : "This month"}
+                  </b>
+                </div>
               </div>
               <div className={styles.line}>
                 <div>Next vaccination:</div>{" "}
-                <div>{petData?.nextVaccination}</div>
+                <div>
+                  {dayjs(petData?.nextVaccination).format("DD, MMMM, YYYY")}{" "}
+                  <b
+                    className={styles.vaccinationDiff}
+                    style={{
+                      color: getDiffColor(nextDiff, "next", 0.5),
+                    }}
+                  >
+                    {nextDiff} day(s) left
+                  </b>
+                </div>
               </div>
             </div>
           )}

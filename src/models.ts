@@ -22,6 +22,7 @@ export type WishListType = {
   type: TypeFilter;
   done: boolean;
   id: string;
+  userId: string;
 };
 
 export type TodoListDataType = {

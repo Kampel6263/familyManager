@@ -1,12 +1,5 @@
 import classNames from "classnames";
-import {
-  LegacyRef,
-  RefObject,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Button from "../../../components/Button/Button";
 import Table from "../../../components/Table/Table";
 import {
@@ -67,13 +60,9 @@ const TodoList: React.FC<Props> = ({ data, teamId, setData }) => {
     return 0;
   });
 
-  const [showInput, setShowInput] = useState(true);
-
   const [inputValue, setInputValue] = useState("");
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
-  const [modalOpen, setModalOpen] = useState(false);
 
   const [scrollWidth, setScrollWidth] = useState<number>(0);
   const ref = useRef<HTMLDivElement>(null);
@@ -83,27 +72,32 @@ const TodoList: React.FC<Props> = ({ data, teamId, setData }) => {
 
   const handleCancel = () => {
     setInputValue("");
-    setShowInput(false);
     setSelectedIndex(null);
   };
 
   const [newCategoryData, setNewCategoryData] = useState<{
     categoryName: string;
     categoryColor: string;
-  }>({ categoryColor: colors[0], categoryName: "" });
+    mode: "edit" | "create" | null;
+  }>({ categoryColor: colors[0], categoryName: "", mode: null });
 
   const handleCloseModal = () => {
-    setNewCategoryData({ categoryColor: colors[0], categoryName: "" });
-    setModalOpen(false);
+    setNewCategoryData({
+      categoryColor: colors[0],
+      categoryName: "",
+      mode: null,
+    });
   };
 
   const addCategory = () => {
     if (newCategoryData) {
       const newCategory: TodoListDataType = {
-        ...newCategoryData,
-        id: "",
-        data: [],
+        categoryColor: newCategoryData.categoryColor,
+        categoryName: newCategoryData.categoryName,
+        id: newCategoryData.mode === "create" ? "" : selectedCategory!.id,
+        data: newCategoryData.mode === "create" ? [] : selectedCategory!.data,
       };
+
       setData({
         data: newCategory,
         query: DatabaseQueryEnum.TODO_LIST,
@@ -158,9 +152,22 @@ const TodoList: React.FC<Props> = ({ data, teamId, setData }) => {
     <>
       <h2>
         {selectedCategory ? (
-          <>
-            {selectedCategory.categoryName} - {selectedCategory.data.length}
-          </>
+          <div className={styles.topHeader}>
+            <div>
+              {selectedCategory.categoryName} - {selectedCategory.data.length}
+            </div>
+            <Button
+              text="Edit category"
+              onClick={() => {
+                setNewCategoryData({
+                  categoryColor: selectedCategory.categoryColor,
+                  categoryName: selectedCategory.categoryName,
+                  mode: "edit",
+                });
+              }}
+              type="primary"
+            />
+          </div>
         ) : (
           "Tasks"
         )}
@@ -296,7 +303,12 @@ const TodoList: React.FC<Props> = ({ data, teamId, setData }) => {
             <h3>Categories</h3>
             <Button
               text="Add"
-              onClick={() => setModalOpen(true)}
+              onClick={() =>
+                setNewCategoryData((prevState) => ({
+                  ...prevState,
+                  mode: "create",
+                }))
+              }
               type="primary"
             />
           </div>
@@ -345,7 +357,7 @@ const TodoList: React.FC<Props> = ({ data, teamId, setData }) => {
           )}
         </div>
       </div>
-      <ModalWrapper modalOpen={modalOpen} height={212}>
+      <ModalWrapper modalOpen={!!newCategoryData.mode} height={212}>
         <h3>Add new category</h3>
         <form
           className={styles.categoryModal}
@@ -409,7 +421,7 @@ const TodoList: React.FC<Props> = ({ data, teamId, setData }) => {
           </div>
           <div className={styles.buttons}>
             <Button
-              text="Create"
+              text={newCategoryData.mode === "create" ? "Create" : "Save"}
               onClick={() => addCategory()}
               disabled={!newCategoryData.categoryName}
               nativeType="submit"

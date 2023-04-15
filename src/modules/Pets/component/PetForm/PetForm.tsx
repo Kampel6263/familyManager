@@ -77,7 +77,7 @@ const PetForm: React.FC<PetFormType> = ({
       onSubmit={(values) => handleSubmit(values)}
     >
       {({ values, errors, handleChange }) => (
-        <Form className={styles.form}>
+        <Form className={classNames(styles.form, "scrollbar")}>
           <h2>New Pet</h2>
           <div
             className={classNames(styles.field, errors.name && styles.error)}

@@ -15,6 +15,7 @@ import WishList from "../../modules/WishList/component/WishList";
 import Loader from "../Loader/Loader";
 import styles from "./ContentWrapper.module.scss";
 import RouteWrapper from "../RouteWrapper/RouteWrapper";
+import Finances from "../../modules/Finances/component/Finances";
 
 type Props = {
   setData: (data: setDataType) => void;
@@ -42,6 +43,7 @@ const ContentWrapper: React.FC<Props> = ({
                   <RouteWrapper state={appData.wishListData.state}>
                     <WishList
                       setData={setData}
+                      userId={appData.userData.data.uid}
                       data={appData.wishListData.data || []}
                       teamId={appData.teamData.data?.teamId || ""}
                     />
@@ -69,6 +71,14 @@ const ContentWrapper: React.FC<Props> = ({
                       data={appData.sibscribersData.data || []}
                       teamId={appData?.teamData.data?.teamId || ""}
                     />
+                  </RouteWrapper>
+                }
+              />
+              <Route
+                path="finances/:tab"
+                element={
+                  <RouteWrapper state={LoadingState.LOADED}>
+                    <Finances />
                   </RouteWrapper>
                 }
               />

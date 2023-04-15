@@ -33,7 +33,7 @@ const AddUserModal: React.FC<Props> = ({ modalOpen, closeModal, addUser }) => {
   };
 
   return (
-    <ModalWrapper modalOpen={modalOpen} height={112}>
+    <ModalWrapper modalOpen={modalOpen} height={158}>
       <div>
         <h3>Add user</h3>
         <div className={styles.form}>

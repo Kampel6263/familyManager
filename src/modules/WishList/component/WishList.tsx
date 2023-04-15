@@ -19,12 +19,17 @@ import WishListModal from "../modals/WishListModal";
 type Props = {
   teamId: string;
   data: WishListType[];
+  userId: string;
   setData: (data: setDataType) => void;
 };
 
-const WishList: React.FC<Props> = ({ data, teamId, setData }) => {
-  const complatedWish = data.filter((el) => el.done);
-  const openedWish = data.filter((el) => !el.done);
+const WishList: React.FC<Props> = ({ data, teamId, userId, setData }) => {
+  const complatedWish = data.filter((el) =>
+    el.type === "personal" ? el.done && el.userId === userId : el.done
+  );
+  const openedWish = data.filter((el) =>
+    el.type === "personal" ? !el.done && el.userId === userId : !el.done
+  );
   const sortData = (data: WishListType[]) =>
     data.sort((a, b) => (a.priority > b.priority ? -1 : 1));
 
@@ -44,6 +49,7 @@ const WishList: React.FC<Props> = ({ data, teamId, setData }) => {
     type: "general",
     done: false,
     id: "",
+    userId: userId,
   };
   const [formData, setFormData] = useState<WishListType>(initialFormData);
 

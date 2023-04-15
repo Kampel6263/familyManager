@@ -35,7 +35,7 @@
       }
     }
     &.addPet {
-      border: 3px dashed #0000004f;
+      border: 3px dashed #0000002f;
       font-size: 20px;
       font-weight: 500;
       color: #00000088;
@@ -179,4 +179,9 @@
       background: rgb(23, 180, 23);
     }
   }
+}
+
+.vaccinationDiff {
+  font-size: 14px;
+  margin-left: 10px;
 }
