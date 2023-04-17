@@ -31,5 +31,5 @@ export const services: ServiceType[] = [
     label: "Steam",
     value: "steam",
   },
-  // TODO: lifecell, domofon,  voda
+  // TODO: lifecell, domofon,  voda, megogo
 ];

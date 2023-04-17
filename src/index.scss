@@ -7,9 +7,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: rgb(241, 245, 248);
 
-  ---black: #1b1616;
+  --black: #1b1616;
   --border: 1px solid #d3dfeb;
-  color: var(---black);
+  color: var(--black);
 }
 
 code {
@@ -20,6 +20,11 @@ code {
 h2 {
   font-size: 20px;
   margin-top: 0px;
+}
+
+h3 {
+  font-size: 16px;
+  margin-top: 0;
 }
 
 input,

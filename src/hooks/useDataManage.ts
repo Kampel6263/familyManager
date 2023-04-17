@@ -24,6 +24,7 @@ import useAuth from "./useAuth";
 import useInitFirebase from "./useInitFirebase";
 import usePetsData from "./usePetsData";
 import useTeamData from "./useTeamData";
+import useFinancesData from "./useFinancesData";
 
 const useDataManage = () => {
   const { app } = useInitFirebase();
@@ -50,6 +51,10 @@ const useDataManage = () => {
       state: LoadingState.LOADING,
     },
     petsData: {
+      data: null,
+      state: LoadingState.LOADING,
+    },
+    financesData: {
       data: null,
       state: LoadingState.LOADING,
     },
@@ -120,6 +125,8 @@ const useDataManage = () => {
           return await getTeamData();
         case DatabaseQueryEnum.PETS:
           return await getPetsData();
+        case DatabaseQueryEnum.FINANCES:
+          return await getFinancesData();
       }
     }
   };
@@ -136,6 +143,8 @@ const useDataManage = () => {
       getTeamData();
     }
   }, [appData.userData?.data?.uid]);
+
+  const { getFinancesData } = useFinancesData({ getData, setAppData });
 
   const getWishListData = async () => {
     const result: any = await getData(DatabaseQueryEnum.WISH_LIST);
@@ -193,6 +202,7 @@ const useDataManage = () => {
       await getTodoListData(),
       await getSibscribersData(),
       await getPetsData(),
+      await getFinancesData(),
     ]);
   };
 

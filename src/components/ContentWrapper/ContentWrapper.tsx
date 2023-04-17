@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, redirect } from "react-router-dom";
 import {
   AppDataType,
   LoadingState,
@@ -37,6 +37,10 @@ const ContentWrapper: React.FC<Props> = ({
           {appData.teamData.data?.teamId ? (
             <Routes>
               <Route path="/" element={<Navigate to={"wish-list"} />} />
+              <Route
+                path="/finances"
+                element={<Navigate to={"/finances/plan"} />}
+              />
               <Route
                 path="wish-list"
                 element={
@@ -77,8 +81,13 @@ const ContentWrapper: React.FC<Props> = ({
               <Route
                 path="finances/:tab"
                 element={
-                  <RouteWrapper state={LoadingState.LOADED}>
-                    <Finances />
+                  <RouteWrapper state={appData.financesData.state}>
+                    <Finances
+                      costsData={appData.financesData.data || []}
+                      teamData={appData.teamData.data}
+                      userData={appData.userData.data}
+                      setData={setData}
+                    />
                   </RouteWrapper>
                 }
               />

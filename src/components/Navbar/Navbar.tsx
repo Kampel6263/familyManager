@@ -37,11 +37,11 @@ const Navbar: React.FC<Props> = () => {
       label: "Sibscribers",
       iconSvg: Sibscribers,
     },
-    // {
-    //   path: "finances/storage",
-    //   label: "Finances",
-    //   iconSvg: Finance,
-    // },
+    {
+      path: "finances",
+      label: "Finances",
+      iconSvg: Finance,
+    },
     {
       path: "pets",
       label: "Pets",
@@ -74,7 +74,7 @@ const Navbar: React.FC<Props> = () => {
         <CollapsSvg className={open ? "" : styles.collaps} />{" "}
         {open && <span>Collaps</span>}
       </div>
-      <div className={styles.version}>v_2.1</div>
+      <div className={styles.version}>v_3.0</div>
     </div>
   );
 };

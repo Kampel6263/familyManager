@@ -1,9 +1,12 @@
+import { CostsDataType } from "./modules/Finances/models/costs";
+
 export enum DatabaseQueryEnum {
   WISH_LIST = "wish-list",
   TODO_LIST = "todo-list",
   SIBSCRIBERS = "sibscribers",
   TEAMS = "teams",
   PETS = "pets",
+  FINANCES = "finances",
 }
 
 export enum PriorityEnum {
@@ -115,6 +118,10 @@ export type AppDataType = {
   };
   teamData: {
     data: TeamDataType | null;
+    state: LoadingState;
+  };
+  financesData: {
+    data: CostsDataType[] | null;
     state: LoadingState;
   };
 };

@@ -1,0 +1,37 @@
+@import "../../../../styles/mixins.scss";
+
+.costs {
+  .item {
+    @include item();
+    grid-template-columns: 1fr 140px 140px;
+    &:not(:last-child):not(:first-child) {
+      cursor: pointer;
+      transition: 0.1s;
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+    &:last-child {
+      font-weight: 500;
+      border-top: 2px solid var(--black);
+    }
+  }
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 200px 1fr 140px 140px;
+  padding: 8px 25px;
+  column-gap: 10px;
+  input {
+    border: none;
+    padding: 0;
+    line-height: 21px;
+    height: 21px;
+    font-size: 16px;
+  }
+  button {
+    height: 21px;
+    padding: 0;
+  }
+}

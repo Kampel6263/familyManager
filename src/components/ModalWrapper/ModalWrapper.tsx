@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import styles from "./ModalWrapper.module.scss";
 import Modal from "react-modal";
+import classNames from "classnames";
 
 type Props = {
   modalOpen: boolean;
@@ -32,7 +33,7 @@ const ModalWrapper: React.FC<Props> = ({
         },
       }}
     >
-      <div className={styles.modal}>{children}</div>
+      <div className={classNames(styles.modal, "scrollbar")}>{children}</div>
     </Modal>
   );
 };
