@@ -25,11 +25,28 @@
   }
 }
 
-.header {
+.users {
   display: flex;
-  justify-content: space-between;
+  column-gap: 2px;
+
+  img {
+    height: 30px;
+    border-radius: 50%;
+    border-style: outset;
+    border: 2px solid transparent;
+    cursor: pointer;
+    &.active {
+      border-color: rgb(29, 101, 255);
+    }
+  }
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 350px 1fr auto;
   align-items: center;
   margin-bottom: 20px;
+  column-gap: 20px;
 }
 
 .selectedMonth {

@@ -20,7 +20,6 @@ const CreateFinancicalMonthsModal: React.FC<Props> = ({
   closeModal,
   setData,
 }) => {
-  console.log(spendingData, "sped");
   const [month, setMonth] = useState(dayjs(new Date()).format("YYYY-MM"));
   const [funds, setFunds] = useState<number | null>(null);
   const [saveCategories, setSaveCategories] = useState(!!spendingData);

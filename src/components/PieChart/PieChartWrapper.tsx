@@ -23,7 +23,7 @@ const PieChartWrapper: React.FC<Props> = ({ data, title, sum }) => {
   useEffect(() => {}, [data]);
   const getRandomColor = () =>
     "#" + Math.floor(Math.random() * 11111123).toString(16);
-  console.log(getRandomColor());
+
   const renderActiveShape = (props: any) => {
     const RADIAN = Math.PI / 180;
     const {

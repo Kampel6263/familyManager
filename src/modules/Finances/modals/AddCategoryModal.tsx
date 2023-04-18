@@ -47,7 +47,7 @@ const AddCategoryModal: React.FC<Props> = ({
   setData,
 }) => {
   const animatedComponents = makeAnimated();
-  console.log(categoryData, "categoryData");
+
   const options: { value: string; label: string }[] = teamData.users
     .filter((el) => el.verified)
     .map((el) => ({ label: el.displayName || el.email, value: el.uid }));

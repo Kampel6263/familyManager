@@ -35,6 +35,7 @@ const Finances: React.FC<Props> = ({
   setData,
 }) => {
   const { tab } = useParams();
+  const [usersFilter, setUsersFilter] = useState<string[]>([]);
   const navigate = useNavigate();
   const isAdmin = useMemo(
     () => userData.uid === teamData.teamId,
@@ -136,6 +137,30 @@ const Finances: React.FC<Props> = ({
           ))}
         </div>
 
+        <div className={styles.users}>
+          {tab === TabEnum.PLAN &&
+            isAdmin &&
+            teamData.users
+              .filter((el) => el.verified)
+              .map((el) => {
+                const active = usersFilter.includes(el.uid);
+                return (
+                  <img
+                    className={active ? styles.active : ""}
+                    src={el.photoURL}
+                    onClick={() =>
+                      active
+                        ? setUsersFilter(
+                            usersFilter.filter((id) => id !== el.uid)
+                          )
+                        : setUsersFilter([...usersFilter, el.uid])
+                    }
+                    alt=""
+                  />
+                );
+              })}
+        </div>
+
         {selectedMonth && (
           <div className={styles.buttons}>
             {!selectedMonth.selected && (
@@ -169,6 +194,7 @@ const Finances: React.FC<Props> = ({
       {tab === TabEnum.PLAN && (
         <Plan
           setData={setData}
+          selectedUsers={usersFilter}
           selectedMonth={selectedMonth}
           teamData={teamData}
           userData={userData}

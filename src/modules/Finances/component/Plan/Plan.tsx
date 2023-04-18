@@ -13,7 +13,7 @@ import { CostsDataType, SpendingDataType } from "../../models/costs";
 import styles from "./Plan.module.scss";
 import { TabEnum } from "../../models/main";
 import AddCategoryModal from "../../modals/AddCategoryModal";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import classNames from "classnames";
 import PieChartWrapper from "../../../../components/PieChart/PieChartWrapper";
 
@@ -21,20 +21,42 @@ type Props = {
   teamData: TeamDataType;
   userData: UserDataType;
   isAdmin: boolean;
+  selectedUsers: string[];
   selectedMonth: CostsDataType | null;
   setData: (data: setDataType) => void;
 };
 
 const Plan: React.FC<Props> = ({
   selectedMonth,
+  selectedUsers,
   teamData,
   isAdmin,
+  userData,
   setData,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [categoryData, setCategoryData] = useState<SpendingDataType | null>(
     null
   );
+
+  const filteredSpendingData =
+    useMemo(
+      () =>
+        selectedUsers.length
+          ? selectedMonth?.spendingData.filter((el) => {
+              for (let id of selectedUsers) {
+                if (el.userIds?.includes(id) || !el.userIds) {
+                  return true;
+                }
+              }
+              return false;
+            })
+          : selectedMonth?.spendingData.filter(
+              (el) =>
+                el.userIds?.includes(userData.uid) || !el.userIds || isAdmin
+            ),
+      [selectedMonth?.spendingData, userData, isAdmin, selectedUsers]
+    ) || [];
 
   const navigate = useNavigate();
   if (!selectedMonth?.id) {
@@ -60,18 +82,35 @@ const Plan: React.FC<Props> = ({
 
   const usedValue = totalSum({
     key: "allocatedSum",
-    data: selectedMonth.spendingData,
+    data: filteredSpendingData || [],
   });
-  const unUsedValue = selectedMonth.allocatedFunds - usedValue;
+  const unUsedValue =
+    (isAdmin
+      ? selectedMonth.allocatedFunds
+      : totalSum({
+          data: filteredSpendingData || [],
+          key: "allocatedSum",
+        })) - usedValue;
 
   const spendingValue = totalSum({
     key: "spendingSum",
-    data: selectedMonth.spendingData,
+    data: filteredSpendingData || [],
   });
   return (
     <div className={styles.summary}>
       <div className={styles.header}>
-        <h3>Plan - {formatValue(selectedMonth.allocatedFunds, "₴")}</h3>
+        <h3>
+          Plan -{" "}
+          {isAdmin
+            ? formatValue(selectedMonth.allocatedFunds, "₴")
+            : formatValue(
+                totalSum({
+                  data: filteredSpendingData || [],
+                  key: "allocatedSum",
+                }),
+                "₴"
+              )}
+        </h3>
         <div>
           <Button
             text="Add category"
@@ -95,7 +134,7 @@ const Plan: React.FC<Props> = ({
             title="Allocated"
             sum={usedValue}
             data={[
-              ...selectedMonth.spendingData.map((el, i) => ({
+              ...filteredSpendingData.map((el, i) => ({
                 name: el.categoryName,
                 value: el.allocatedSum,
                 fill: el.categoryColor,
@@ -111,7 +150,7 @@ const Plan: React.FC<Props> = ({
             title="Spending"
             sum={spendingValue}
             data={[
-              ...selectedMonth.spendingData.map((el, i) => ({
+              ...filteredSpendingData.map((el, i) => ({
                 name: el.categoryName,
                 value: el.spendingSum,
                 fill: el.categoryColor,
@@ -134,7 +173,7 @@ const Plan: React.FC<Props> = ({
                 <div>Spending, %</div>
               </div>
             )}
-            {selectedMonth.spendingData.map((el) => (
+            {filteredSpendingData?.map((el) => (
               <div
                 className={classNames(
                   styles.item,
