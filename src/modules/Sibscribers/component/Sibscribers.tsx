@@ -64,10 +64,12 @@ const Sibscribers: React.FC<Props> = ({
             </div>
             {data
               .sort((a, b) => {
-                if (a.monthNumber > b.monthNumber) {
-                  return -1;
-                } else if (a.monthNumber > b.monthNumber) {
+                const daysLeftA = getDaysLeft(a.monthNumber);
+                const daysLeftB = getDaysLeft(b.monthNumber);
+                if (daysLeftA > daysLeftB) {
                   return 1;
+                } else if (daysLeftA < daysLeftB) {
+                  return -1;
                 }
                 return 0;
               })

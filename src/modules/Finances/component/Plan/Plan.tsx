@@ -180,8 +180,7 @@ const Plan: React.FC<Props> = ({
                   (!isAdmin || selectedMonth.closed) && styles.disabled
                 )}
                 style={{
-                  background: el.categoryColor + 10,
-                  borderBottom: "3px solid" + el.categoryColor,
+                  borderBottom: "2px solid" + el.categoryColor,
                 }}
                 onClick={() => {
                   setCategoryData(el);

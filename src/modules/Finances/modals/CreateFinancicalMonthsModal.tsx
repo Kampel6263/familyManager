@@ -43,6 +43,7 @@ const CreateFinancicalMonthsModal: React.FC<Props> = ({
       month,
       id: "",
       selected: false,
+      lastCostUpdate: "",
     };
     setData({ data: data, query: DatabaseQueryEnum.FINANCES, teamId: true });
     handleClose();

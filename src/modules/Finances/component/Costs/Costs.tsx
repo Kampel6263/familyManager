@@ -14,6 +14,8 @@ import FormWrapper from "../../../../components/FormWrapper/FormWrapper";
 import Button from "../../../../components/Button/Button";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
+import { TabEnum } from "../../models/main";
 type Props = {
   selectedMonth: CostsDataType | null;
   userData: UserDataType;
@@ -28,7 +30,7 @@ const Costs: React.FC<Props> = ({
   setData,
 }) => {
   const [editedItem, setEditedItem] = useState("");
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<{
     sum?: string;
     comment?: string;
@@ -43,11 +45,13 @@ const Costs: React.FC<Props> = ({
     if (selectedMonth?.spendingData) {
       const data: CostsDataType = {
         ...selectedMonth,
+        lastCostUpdate: dayjs(new Date()).format("HH:mm, DD/MM/YYYY"),
         spendingData: selectedMonth.spendingData.map((el) =>
           el.id === editedItem
             ? {
                 ...el,
                 spendingSum: el.spendingSum + +(formData?.sum || 0),
+
                 spendingHistory: [
                   ...el.spendingHistory,
                   {
@@ -91,8 +95,16 @@ const Costs: React.FC<Props> = ({
     });
   return (
     <div className={styles.costs}>
-      <h2>Costs</h2>
-      <Table state={LoadingState.LOADED}>
+      <div className={styles.header}>
+        <h2>Costs </h2>
+        {selectedMonth.lastCostUpdate && (
+          <div>
+            Last update: <b>{selectedMonth.lastCostUpdate}</b>
+          </div>
+        )}
+      </div>
+
+      <Table state={LoadingState.LOADED} className={styles.table}>
         <div className={styles.item}>
           <div>Category</div>
           <div>Balance</div>
@@ -132,6 +144,16 @@ const Costs: React.FC<Props> = ({
               <div>{el.categoryName}</div>
               <div>{formatValue(el.allocatedSum - el.spendingSum, "₴")}</div>
               <div>{formatValue(el.spendingSum, "₴")}</div>
+              {selectedMonth.selected && (
+                <Button
+                  text="View"
+                  type="primary"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate("/finances/" + TabEnum.PAYMENTS + "/" + el.id);
+                  }}
+                />
+              )}
             </div>
           )
         )}

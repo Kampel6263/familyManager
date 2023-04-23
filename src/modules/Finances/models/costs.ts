@@ -23,4 +23,5 @@ export type CostsDataType = {
   closed: boolean;
   selected: boolean;
   id: string;
+  lastCostUpdate: string;
 };

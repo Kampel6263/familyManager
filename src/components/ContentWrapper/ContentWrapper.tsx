@@ -16,6 +16,7 @@ import Loader from "../Loader/Loader";
 import styles from "./ContentWrapper.module.scss";
 import RouteWrapper from "../RouteWrapper/RouteWrapper";
 import Finances from "../../modules/Finances/component/Finances";
+import Payments from "../../modules/Finances/component/Costs/Payments";
 
 type Props = {
   setData: (data: setDataType) => void;
@@ -78,19 +79,36 @@ const ContentWrapper: React.FC<Props> = ({
                   </RouteWrapper>
                 }
               />
-              <Route
-                path="finances/:tab"
-                element={
-                  <RouteWrapper state={appData.financesData.state}>
-                    <Finances
-                      costsData={appData.financesData.data || []}
-                      teamData={appData.teamData.data}
-                      userData={appData.userData.data}
-                      setData={setData}
-                    />
-                  </RouteWrapper>
-                }
-              />
+              <Route path="finances">
+                <Route
+                  path=":tab"
+                  element={
+                    <RouteWrapper state={appData.financesData.state}>
+                      <Finances
+                        costsData={appData.financesData.data || []}
+                        teamData={appData.teamData.data}
+                        userData={appData.userData.data}
+                        setData={setData}
+                      />
+                    </RouteWrapper>
+                  }
+                />
+                <Route
+                  path=":payments/:id"
+                  element={
+                    <RouteWrapper state={appData.financesData.state}>
+                      <Payments
+                        teamData={appData.teamData.data}
+                        selectedMonth={
+                          appData.financesData.data?.find(
+                            (el) => el.selected
+                          ) || null
+                        }
+                      />
+                    </RouteWrapper>
+                  }
+                />
+              </Route>
               <Route
                 path="pets"
                 element={
