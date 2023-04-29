@@ -3,6 +3,7 @@ import telegramIcon from "./assets/services/telegram.png";
 import netflixIcon from "./assets/services/netflix.png";
 import voliaIcon from "./assets/services/volia.png";
 import steamIcon from "./assets/services/steam.png";
+import megogoIcon from "./assets/services/megogo.png";
 import { ServiceType } from "./models";
 
 export const services: ServiceType[] = [
@@ -31,5 +32,10 @@ export const services: ServiceType[] = [
     label: "Steam",
     value: "steam",
   },
-  // TODO: lifecell, domofon,  voda, megogo
+  {
+    img: megogoIcon,
+    label: "Megogo",
+    value: "megogo",
+  },
+  // TODO: lifecell, domofon,  voda
 ];

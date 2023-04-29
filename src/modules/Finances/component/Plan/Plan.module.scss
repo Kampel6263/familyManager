@@ -24,8 +24,8 @@
     &:not(:first-child):not(:last-child) {
       cursor: pointer;
       transition: 0.1s;
+      background-color: #fff;
 
-      background-blend-mode: hard-light;
       &:hover {
         transform: scale(1.01);
         button {

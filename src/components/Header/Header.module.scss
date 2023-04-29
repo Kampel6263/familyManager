@@ -13,6 +13,27 @@
   align-items: center;
 }
 
+.leftSide {
+  display: flex;
+  width: 260px;
+  justify-content: space-between;
+  align-items: center;
+  .back {
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 500;
+    border: 1px solid var(--black);
+    padding: 2px 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: 0.1s;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
 .userData {
   display: flex;
   align-items: center;

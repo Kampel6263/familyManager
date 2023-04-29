@@ -132,6 +132,9 @@
     .deleteButton {
       opacity: 1;
     }
+    .daysAgo {
+      opacity: 0;
+    }
   }
   .deleteButton {
     position: absolute;
@@ -144,10 +147,19 @@
       padding: 2px 4px;
     }
   }
-
+  .dateData {
+    display: flex;
+    justify-content: space-between;
+  }
   .date {
     font-size: 13px;
     font-weight: bold;
+  }
+  .daysAgo {
+    font-size: 12px;
+    font-weight: 500;
+    transition: 0.1s;
+    pointer-events: none;
   }
   .name {
     font-size: 11px;

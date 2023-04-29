@@ -73,14 +73,6 @@ const SibscribersModal: React.FC<Props> = ({
         <h3>Add a new sibscribe</h3>
         <div className={styles.form}>
           <div className={styles.fields}>
-            <input
-              type="text"
-              value={formData.service}
-              placeholder={"Input service name"}
-              onChange={(e) =>
-                onChangeForm({ key: "service", value: e.target.value })
-              }
-            />
             <select
               name="select"
               placeholder="Select type"
@@ -98,6 +90,14 @@ const SibscribersModal: React.FC<Props> = ({
                 </option>
               ))}
             </select>
+            <input
+              type="text"
+              value={formData.service}
+              placeholder={"Comment"}
+              onChange={(e) =>
+                onChangeForm({ key: "service", value: e.target.value })
+              }
+            />
           </div>
 
           <div className={styles.fields}>

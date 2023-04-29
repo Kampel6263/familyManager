@@ -52,7 +52,7 @@
 
   &.show {
     opacity: 1;
-    height: 35px;
+    height: 25px;
   }
 
   .text {
@@ -97,15 +97,23 @@
   h3 {
     margin: 0;
   }
+  h4 {
+    margin-bottom: 6px;
+    margin-top: 10px;
+  }
   button {
     padding: 2px 10px;
   }
 }
 .list {
-  margin-top: 18px;
   display: grid;
   grid-template-columns: 1fr;
   row-gap: 16px;
+
+  margin-top: 18px;
+  &.completedList {
+    margin-top: 0;
+  }
 }
 .category {
   display: flex;
@@ -200,4 +208,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 20px;
+}
+
+.completed {
+  opacity: 0.4;
 }

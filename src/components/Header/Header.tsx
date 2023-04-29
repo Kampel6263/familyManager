@@ -5,6 +5,7 @@ import Button from "../Button/Button";
 import photoPlaceholder from "../../assets/globalImgs/photoPlaceholder.jpg";
 import { useState } from "react";
 import classNames from "classnames";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   userData: UserDataType | null;
@@ -13,11 +14,16 @@ type Props = {
 
 const Header: React.FC<Props> = ({ userData, logout }) => {
   const [showPopup, setShowPopup] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <div className={styles.header}>
       <div className={styles.container}>
-        <img src={LogoImg} alt="" />
+        <div className={styles.leftSide}>
+          <img src={LogoImg} alt="" />
+          <div className={styles.back} onClick={() => navigate(-1)}>
+            &larr; Back
+          </div>
+        </div>
 
         <div
           className={styles.userData}

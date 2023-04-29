@@ -11,6 +11,7 @@ import {
 import styles from "./TodoList.module.scss";
 import ModalWrapper from "../../../components/ModalWrapper/ModalWrapper";
 import Loader from "../../../components/Loader/Loader";
+import dayjs from "dayjs";
 
 type Props = {
   teamId: string;
@@ -96,6 +97,7 @@ const TodoList: React.FC<Props> = ({ data, teamId, setData }) => {
         categoryName: newCategoryData.categoryName,
         id: newCategoryData.mode === "create" ? "" : selectedCategory!.id,
         data: newCategoryData.mode === "create" ? [] : selectedCategory!.data,
+        lastUpdate: dayjs(new Date()).format("YYYY/MM/DD"),
       };
 
       setData({
@@ -111,6 +113,7 @@ const TodoList: React.FC<Props> = ({ data, teamId, setData }) => {
     if (selectedCategory && name) {
       const newData: TodoListDataType = {
         ...selectedCategory,
+        lastUpdate: dayjs(new Date()).format("YYYY/MM/DD"),
         data:
           index || index === 0
             ? selectedCategory.data.map((el, i) =>
@@ -147,6 +150,13 @@ const TodoList: React.FC<Props> = ({ data, teamId, setData }) => {
         return curr.done ? ++accum : accum;
       }, 0)
     : 0;
+
+  const openCategories = data.filter(
+    (el) => !el.data.length || el.data.some((item) => !item.done)
+  );
+  const closedCategories = data.filter(
+    (el) => el.data.length && !el.data.some((item) => !item.done)
+  );
 
   return (
     <>
@@ -312,46 +322,100 @@ const TodoList: React.FC<Props> = ({ data, teamId, setData }) => {
               type="primary"
             />
           </div>
-          {data.length ? (
-            <div className={styles.list}>
-              {data.map((el) => (
-                <div
-                  className={styles.category}
-                  onClick={() => {
-                    setSelectedCategory(el);
-                    setSelectedId(el.id);
-                  }}
-                  style={{
-                    borderColor: el.categoryColor,
-                    background:
-                      selectedCategory?.id === el.id
-                        ? el.categoryColor + "10"
-                        : "",
-                  }}
-                >
-                  <div className={styles.title}>
+          {openCategories.length || closedCategories.length ? (
+            <>
+              {!!openCategories.length && (
+                <div className={styles.list}>
+                  {openCategories?.map((el) => (
                     <div
-                      className={styles.titleColor}
-                      style={{ background: el.categoryColor }}
-                    ></div>
-                    {el.categoryName} - {el.data.length}
-                  </div>
+                      className={classNames(styles.category)}
+                      onClick={() => {
+                        setSelectedCategory(el);
+                        setSelectedId(el.id);
+                      }}
+                      style={{
+                        borderColor: el.categoryColor,
+                        background:
+                          selectedCategory?.id === el.id
+                            ? el.categoryColor + "10"
+                            : "",
+                      }}
+                    >
+                      <div className={styles.title}>
+                        <div
+                          className={styles.titleColor}
+                          style={{ background: el.categoryColor }}
+                        ></div>
+                        {el.categoryName} - {el.data.length}
+                      </div>
 
-                  <Button
-                    text=""
-                    type="remove"
-                    onClick={(e: any) => {
-                      e.stopPropagation();
-                      setData({
-                        data: el.id,
-                        query: DatabaseQueryEnum.TODO_LIST,
-                        teamId: true,
-                      });
-                    }}
-                  />
+                      <Button
+                        text=""
+                        type="remove"
+                        onClick={(e: any) => {
+                          e.stopPropagation();
+                          setData({
+                            data: el.id,
+                            query: DatabaseQueryEnum.TODO_LIST,
+                            teamId: true,
+                          });
+                        }}
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              )}
+              {!!closedCategories.length && (
+                <>
+                  <h4>Recently completed</h4>
+                  <div
+                    className={classNames(styles.list, styles.completedList)}
+                  >
+                    {closedCategories?.map((el) => (
+                      <div
+                        className={classNames(
+                          styles.category,
+
+                          styles.completed
+                        )}
+                        onClick={() => {
+                          setSelectedCategory(el);
+                          setSelectedId(el.id);
+                        }}
+                        style={{
+                          borderColor: el.categoryColor,
+                          background:
+                            selectedCategory?.id === el.id
+                              ? el.categoryColor + "10"
+                              : "",
+                        }}
+                      >
+                        <div className={styles.title}>
+                          <div
+                            className={styles.titleColor}
+                            style={{ background: el.categoryColor }}
+                          ></div>
+                          {el.categoryName} - {el.data.length}
+                        </div>
+
+                        <Button
+                          text=""
+                          type="remove"
+                          onClick={(e: any) => {
+                            e.stopPropagation();
+                            setData({
+                              data: el.id,
+                              query: DatabaseQueryEnum.TODO_LIST,
+                              teamId: true,
+                            });
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </>
           ) : (
             <Loader state={LoadingState.NO_DATA} />
           )}

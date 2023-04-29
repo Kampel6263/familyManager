@@ -25,6 +25,7 @@ import useInitFirebase from "./useInitFirebase";
 import usePetsData from "./usePetsData";
 import useTeamData from "./useTeamData";
 import useFinancesData from "./useFinancesData";
+import dayjs from "dayjs";
 
 const useDataManage = () => {
   const { app } = useInitFirebase();
@@ -170,7 +171,20 @@ const useDataManage = () => {
     result.forEach((doc: any) => {
       data.push({ ...doc.data(), id: doc.id });
     });
-
+    data.forEach((el) => {
+      const daysLeft = dayjs(new Date()).diff(el?.lastUpdate, "days");
+      const isDone = el.data.length && !el.data.some((item) => !item.done);
+      if (daysLeft > 7 && isDone) {
+        const id = data.find((item) => item.id === el.id)?.id;
+        if (id) {
+          setData({
+            data: id,
+            query: DatabaseQueryEnum.TODO_LIST,
+            teamId: true,
+          });
+        }
+      }
+    });
     setAppData((prevState) => ({
       ...prevState,
       todoListData: {

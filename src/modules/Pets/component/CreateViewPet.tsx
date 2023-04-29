@@ -181,10 +181,15 @@ const CreateViewPet: React.FC<Props> = ({ tab, data, setData }) => {
                         type="remove"
                       />
                     </div>
-
-                    <div className={styles.date}>
-                      {dayjs(el.date).format("DD MMMM YYYY")}
+                    <div className={styles.dateData}>
+                      <div className={styles.date}>
+                        {dayjs(el.date).format("DD MMMM YYYY")}
+                      </div>
+                      <div className={styles.daysAgo}>
+                        {dayjs(new Date()).diff(el.date, "days")} day(s) ago
+                      </div>
                     </div>
+
                     <div className={styles.name}>{el.name || "-"}</div>
                     <div className={styles.checkboxes}>
                       <div

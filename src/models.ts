@@ -32,6 +32,7 @@ export type TodoListDataType = {
   categoryName: string;
   categoryColor: string;
   data: { name: string; done: boolean }[];
+  lastUpdate: string;
   id: string;
 };
 
