@@ -16,6 +16,10 @@ export type SpendingDataType = {
   id: string;
 };
 
+export type LastCostUpdateType = {
+  [key: string]: string;
+};
+
 export type CostsDataType = {
   month: string;
   allocatedFunds: number;
@@ -23,5 +27,5 @@ export type CostsDataType = {
   closed: boolean;
   selected: boolean;
   id: string;
-  lastCostUpdate: string;
+  lastCostUpdate: LastCostUpdateType;
 };

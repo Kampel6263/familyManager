@@ -45,7 +45,9 @@ const Costs: React.FC<Props> = ({
     if (selectedMonth?.spendingData) {
       const data: CostsDataType = {
         ...selectedMonth,
-        lastCostUpdate: dayjs(new Date()).format("HH:mm, DD/MM/YYYY"),
+        lastCostUpdate: {
+          [userData.uid]: dayjs(new Date()).format("HH:mm, DD/MM/YYYY"),
+        },
         spendingData: selectedMonth.spendingData.map((el) =>
           el.id === editedItem
             ? {
@@ -86,20 +88,20 @@ const Costs: React.FC<Props> = ({
   }
   const totalBalance =
     totalSum({
-      data: selectedMonth.spendingData,
+      data: filteredData || [],
       key: "allocatedSum",
     }) -
     totalSum({
-      data: selectedMonth.spendingData,
+      data: filteredData || [],
       key: "spendingSum",
     });
   return (
     <div className={styles.costs}>
       <div className={styles.header}>
         <h2>Costs </h2>
-        {selectedMonth.lastCostUpdate && (
+        {selectedMonth.lastCostUpdate[userData.uid] && (
           <div>
-            Last update: <b>{selectedMonth.lastCostUpdate}</b>
+            Last update: <b>{selectedMonth.lastCostUpdate[userData.uid]}</b>
           </div>
         )}
       </div>
@@ -163,7 +165,7 @@ const Costs: React.FC<Props> = ({
           <div>
             {formatValue(
               totalSum({
-                data: selectedMonth.spendingData,
+                data: filteredData || [],
                 key: "spendingSum",
               }),
               "₴"

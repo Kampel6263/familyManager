@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, Navigate, redirect } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import {
   AppDataType,
   LoadingState,
@@ -104,6 +104,7 @@ const ContentWrapper: React.FC<Props> = ({
                             (el) => el.selected
                           ) || null
                         }
+                        setData={setData}
                       />
                     </RouteWrapper>
                   }
