@@ -17,6 +17,7 @@ import styles from "./ContentWrapper.module.scss";
 import RouteWrapper from "../RouteWrapper/RouteWrapper";
 import Finances from "../../modules/Finances/component/Finances";
 import Payments from "../../modules/Finances/component/Costs/Payments";
+import Security from "../../modules/Security/component/Security";
 
 type Props = {
   setData: (data: setDataType) => void;
@@ -41,6 +42,10 @@ const ContentWrapper: React.FC<Props> = ({
               <Route
                 path="/finances"
                 element={<Navigate to={"/finances/plan"} />}
+              />
+              <Route
+                path="/security"
+                element={<Navigate to={"/security/pin"} />}
               />
               <Route
                 path="wish-list"
@@ -131,6 +136,21 @@ const ContentWrapper: React.FC<Props> = ({
                   </RouteWrapper>
                 }
               />
+              <Route path="security">
+                <Route
+                  path=":tab"
+                  element={
+                    <RouteWrapper state={LoadingState.LOADED}>
+                      <Security
+                        teamData={appData.teamData.data}
+                        userData={appData.userData.data}
+                        passwordsData={appData.passwordsData.data || []}
+                        setData={setData}
+                      />
+                    </RouteWrapper>
+                  }
+                />
+              </Route>
               <Route
                 path="team"
                 element={

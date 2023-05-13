@@ -6,6 +6,7 @@ import { ReactComponent as Sibscribers } from "../../assets/navbar/subscribe.svg
 import { ReactComponent as Team } from "../../assets/navbar/team-svgrepo-com.svg";
 import { ReactComponent as Pets } from "../../assets//navbar/pets.svg";
 import { ReactComponent as Finance } from "../../assets//navbar/finances.svg";
+import { ReactComponent as Security } from "../../assets//navbar/security.svg";
 
 import { NavLink } from "react-router-dom";
 import classNames from "classnames";
@@ -48,6 +49,11 @@ const Navbar: React.FC<Props> = () => {
       iconSvg: Pets,
     },
     {
+      path: "security",
+      label: "Security",
+      iconSvg: Security,
+    },
+    {
       path: "team",
       label: "Team",
       iconSvg: Team,
@@ -74,7 +80,7 @@ const Navbar: React.FC<Props> = () => {
         <CollapsSvg className={open ? "" : styles.collaps} />{" "}
         {open && <span>Collaps</span>}
       </div>
-      <div className={styles.version}>v_3.3</div>
+      <div className={styles.version}>v_4.0</div>
     </div>
   );
 };

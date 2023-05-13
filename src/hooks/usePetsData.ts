@@ -1,17 +1,13 @@
-import { DocumentData, Firestore, QuerySnapshot } from "firebase/firestore";
+import { DocumentData, QuerySnapshot } from "firebase/firestore";
 import {
   AppDataType,
   DatabaseQueryEnum,
   LoadingState,
   PetsDataType,
-  setDataType,
 } from "../models";
 
 type Props = {
-  //   appData: AppDataType;
   setAppData: (props: React.SetStateAction<AppDataType>) => void;
-  //   db: Firestore;
-  //   setData: (props: setDataType) => void;
   getData: (
     databaseQuery: DatabaseQueryEnum
   ) => Promise<QuerySnapshot<DocumentData>>;

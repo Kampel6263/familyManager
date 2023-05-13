@@ -6,6 +6,7 @@ import Header from "./components/Header/Header";
 import ModalWrapper from "./components/ModalWrapper/ModalWrapper";
 import Navbar from "./components/Navbar/Navbar";
 import useDataManage from "./hooks/useDataManage";
+import { ToastContainer } from "react-toastify";
 
 const App: React.FC = () => {
   const { appData, modalData, setData, login, logout, addUser } =
@@ -41,6 +42,7 @@ const App: React.FC = () => {
           </div>
         </div>
       </ModalWrapper>
+      <ToastContainer />
     </div>
   );
 };

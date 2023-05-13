@@ -1,3 +1,4 @@
+import { PasswordsDataType } from "./hooks/usePasswordsData";
 import { CostsDataType } from "./modules/Finances/models/costs";
 
 export enum DatabaseQueryEnum {
@@ -7,6 +8,7 @@ export enum DatabaseQueryEnum {
   TEAMS = "teams",
   PETS = "pets",
   FINANCES = "finances",
+  PASSWORDS = "passwords",
 }
 
 export enum PriorityEnum {
@@ -60,6 +62,9 @@ export interface UserDataType {
 export interface TeamUserDataType extends UserDataType {
   verified: boolean;
   owner: boolean;
+  pin?: any;
+  attempts?: number;
+  lastIncorrectTry?: string | null;
 }
 
 export type TeamDataType = {
@@ -123,6 +128,10 @@ export type AppDataType = {
   };
   financesData: {
     data: CostsDataType[] | null;
+    state: LoadingState;
+  };
+  passwordsData: {
+    data: PasswordsDataType[] | null;
     state: LoadingState;
   };
 };

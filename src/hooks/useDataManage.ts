@@ -26,6 +26,7 @@ import usePetsData from "./usePetsData";
 import useTeamData from "./useTeamData";
 import useFinancesData from "./useFinancesData";
 import dayjs from "dayjs";
+import usePasswordsData from "./usePasswordsData";
 
 const useDataManage = () => {
   const { app } = useInitFirebase();
@@ -56,6 +57,10 @@ const useDataManage = () => {
       state: LoadingState.LOADING,
     },
     financesData: {
+      data: null,
+      state: LoadingState.LOADING,
+    },
+    passwordsData: {
       data: null,
       state: LoadingState.LOADING,
     },
@@ -128,6 +133,8 @@ const useDataManage = () => {
           return await getPetsData();
         case DatabaseQueryEnum.FINANCES:
           return await getFinancesData();
+        case DatabaseQueryEnum.PASSWORDS:
+          return await getPasswordsData();
       }
     }
   };
@@ -137,15 +144,14 @@ const useDataManage = () => {
     setAppData,
     setData,
   });
-
-  const { getPetsData } = usePetsData({ getData, setAppData });
   useEffect(() => {
     if (appData.userData.data?.uid) {
       getTeamData();
     }
   }, [appData.userData?.data?.uid]);
-
+  const { getPetsData } = usePetsData({ getData, setAppData });
   const { getFinancesData } = useFinancesData({ getData, setAppData });
+  const { getPasswordsData } = usePasswordsData({ getData, setAppData });
 
   const getWishListData = async () => {
     const result: any = await getData(DatabaseQueryEnum.WISH_LIST);
@@ -217,6 +223,7 @@ const useDataManage = () => {
       await getSibscribersData(),
       await getPetsData(),
       await getFinancesData(),
+      await getPasswordsData(),
     ]);
   };
 

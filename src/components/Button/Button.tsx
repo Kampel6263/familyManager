@@ -4,7 +4,7 @@ import removeIcon from "../../assets/globalImgs/delete-icon.webp";
 
 type Props = {
   text: string;
-  onClick: (e?: any) => void;
+  onClick?: (e?: any) => void;
   type?: "primary" | "secondary" | "remove";
   nativeType?: "button" | "submit" | "reset";
   disabled?: boolean;
