@@ -46,6 +46,7 @@ const Costs: React.FC<Props> = ({
       const data: CostsDataType = {
         ...selectedMonth,
         lastCostUpdate: {
+          ...selectedMonth.lastCostUpdate,
           [userData.uid]: dayjs(new Date()).format("HH:mm, DD/MM/YYYY"),
         },
         spendingData: selectedMonth.spendingData.map((el) =>
