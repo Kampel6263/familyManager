@@ -4,12 +4,17 @@ import dayjs from "dayjs";
 import styles from "./Modal.module.scss";
 import Button from "../../../components/Button/Button";
 import { DatabaseQueryEnum, setDataType } from "../../../models";
-import { CostsDataType, SpendingDataType } from "../models/costs";
+import {
+  CostsDataType,
+  LabelsDataType,
+  SpendingDataType,
+} from "../models/costs";
 import classNames from "classnames";
 
 type Props = {
   modalOpen: boolean;
   spendingData: SpendingDataType[];
+  labelsData?: LabelsDataType[];
   setData: (data: setDataType) => void;
   closeModal: () => void;
 };
@@ -17,6 +22,7 @@ type Props = {
 const CreateFinancicalMonthsModal: React.FC<Props> = ({
   modalOpen,
   spendingData,
+  labelsData,
   closeModal,
   setData,
 }) => {
@@ -36,6 +42,11 @@ const CreateFinancicalMonthsModal: React.FC<Props> = ({
         }))
       : [];
 
+    const labelsDataForRequest =
+      saveCategories && labelsData
+        ? labelsData.map((el) => ({ ...el, spend: 0 }))
+        : [{ name: "No label", spend: 0, userId: null }];
+
     const data: CostsDataType = {
       allocatedFunds: funds || 0,
       spendingData: spendingDataForRequest,
@@ -44,6 +55,7 @@ const CreateFinancicalMonthsModal: React.FC<Props> = ({
       id: "",
       selected: false,
       lastCostUpdate: {},
+      labelsData: labelsDataForRequest,
     };
     setData({ data: data, query: DatabaseQueryEnum.FINANCES, teamId: true });
     handleClose();
@@ -75,7 +87,9 @@ const CreateFinancicalMonthsModal: React.FC<Props> = ({
             checked={saveCategories}
             onChange={() => setSaveCategories(!saveCategories)}
           />
-          <label htmlFor="checkbox">Save categories from last month</label>
+          <label htmlFor="checkbox">
+            Save categories and labels from last month
+          </label>
         </div>
 
         <div className={styles.buttons}>

@@ -11,6 +11,7 @@ import {
 } from "../../../models";
 import SibscribersModal from "../modals/SibscribersModal";
 import styles from "./Sibscribers.module.scss";
+import noservicename from "../../../assets/services/noservicename.png";
 
 type Props = {
   data: SibscribersDataType[];
@@ -82,7 +83,7 @@ const Sibscribers: React.FC<Props> = ({
                     <div className={styles.service}>
                       <img
                         className={styles.serviceImg}
-                        src={serviceData?.img}
+                        src={serviceData?.img || noservicename}
                         alt=""
                       />
                       <span>

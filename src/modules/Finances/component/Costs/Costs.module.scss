@@ -59,7 +59,8 @@
 
 .form {
   display: grid;
-  grid-template-columns: 200px 1fr 140px 140px;
+  grid-template-columns: 200px 160px 1fr 140px 140px;
+  align-items: center;
   padding: 8px 25px;
   column-gap: 10px;
   input {

@@ -20,6 +20,7 @@ import FinancicalMonths from "./FinancicalMonths/FinancicalMonths";
 import dayjs from "dayjs";
 import showIcon from "../../../assets/globalImgs/showIcon.svg";
 import select from "../../../assets/globalImgs/select.svg";
+import CostsByLabel from "./CostsByLabel/CostsByLabel";
 
 type Props = {
   costsData: CostsDataType[];
@@ -114,6 +115,11 @@ const Finances: React.FC<Props> = ({
       disabled: !selectedMonth || selectedMonth.closed,
     },
     {
+      label: "Costs by label",
+      path: TabEnum.COSTS_BY_LABEL,
+      disabled: !selectedMonth,
+    },
+    {
       label: "Financial months",
       path: TabEnum.FINANCIAL_MONTHS,
     },
@@ -138,7 +144,7 @@ const Finances: React.FC<Props> = ({
         </div>
 
         <div className={styles.users}>
-          {tab === TabEnum.PLAN &&
+          {(tab === TabEnum.PLAN || tab === TabEnum.COSTS_BY_LABEL) &&
             isAdmin &&
             teamData.users
               .filter((el) => el.verified)
@@ -216,6 +222,15 @@ const Finances: React.FC<Props> = ({
           selectedMonth={selectedMonth}
           setData={setData}
           setSelectedMonth={setSelectedMonth}
+        />
+      )}
+      {tab === TabEnum.COSTS_BY_LABEL && (
+        <CostsByLabel
+          setData={setData}
+          monthData={selectedMonth}
+          userData={userData}
+          selectedUsers={usersFilter}
+          isAdmin={isAdmin}
         />
       )}
     </>

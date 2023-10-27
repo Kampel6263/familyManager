@@ -63,6 +63,7 @@ const FinancicalMonths: React.FC<Props> = ({
       <CreateFinancicalMonthsModal
         setData={setData}
         spendingData={costsData[0]?.spendingData || null}
+        labelsData={costsData[0]?.labelsData}
         modalOpen={modalOpen}
         closeModal={() => setModalOpen(false)}
       />

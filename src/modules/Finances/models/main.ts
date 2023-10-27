@@ -4,4 +4,5 @@ export enum TabEnum {
   STORAGE = "storage",
   FINANCIAL_MONTHS = "financial-months",
   PAYMENTS = "payments",
+  COSTS_BY_LABEL = "costs-by-label",
 }

@@ -34,7 +34,8 @@ const Costs: React.FC<Props> = ({
   const [formData, setFormData] = useState<{
     sum?: string;
     comment?: string;
-  } | null>(null);
+    label?: string;
+  } | null>({ label: "No label" });
 
   const handleCancel = () => {
     setFormData(null);
@@ -49,6 +50,11 @@ const Costs: React.FC<Props> = ({
           ...selectedMonth.lastCostUpdate,
           [userData.uid]: dayjs(new Date()).format("HH:mm, DD/MM/YYYY"),
         },
+        labelsData: selectedMonth.labelsData?.map((el) =>
+          formData?.label === el.name
+            ? { ...el, spend: el.spend + +(formData.sum || 0) }
+            : el
+        ),
         spendingData: selectedMonth.spendingData.map((el) =>
           el.id === editedItem
             ? {
@@ -125,6 +131,22 @@ const Costs: React.FC<Props> = ({
                   setFormData({ ...formData, sum: e.target.value })
                 }
               />
+              <select
+                name="label"
+                placeholder="Select label"
+                value={formData?.label}
+                onChange={(e) =>
+                  setFormData({ ...formData, label: e.target.value })
+                }
+              >
+                {selectedMonth.labelsData
+                  ?.filter((el) => el.userId === userData.uid || !el.userId)
+                  .map((el, i) => (
+                    <option value={el.name} key={el.name + i}>
+                      {el.name}
+                    </option>
+                  ))}
+              </select>
               <input
                 type="text"
                 placeholder="Comment"

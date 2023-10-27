@@ -10,19 +10,17 @@ export const getIconByPetType = (type: string) => {
   }
 };
 
-export const getPetAge = (birthday: string) => {
-  const totalMonth = dayjs(new Date()).diff(birthday, "month");
-  const days = dayjs(new Date()).diff(birthday, "days");
+export const getPetAge = (birthdate: string) => {
+  const currentDate = dayjs();
 
-  const years = Math.floor(totalMonth / 12);
-  const month = totalMonth % 12;
-  const ageString =
-    month === 0
-      ? days + ` day${days > 1 ? "s" : ""}`
-      : `${years ? `${years} year${years > 1 ? "s" : ""}` : ""} ` +
-        `${month ? `${month} month${month > 1 ? "s" : ""}` : ""}`;
+  const years = currentDate.diff(birthdate, "year");
+  const months = currentDate.diff(birthdate, "month") % 12;
+  const days = currentDate.diff(birthdate, "day") % 30;
+  const age = `${years ? `${years} year${years > 1 ? "s" : ""}` : ""}  ${
+    months ? `${months} month${months > 1 ? "s" : ""}` : ""
+  } ${days ? `${days} day${days > 1 ? "s" : ""}` : ""}`;
 
-  return ageString;
+  return age;
 };
 
 export const getDiffColor = (

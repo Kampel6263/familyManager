@@ -20,6 +20,12 @@ export type LastCostUpdateType = {
   [key: string]: string;
 };
 
+export type LabelsDataType = {
+  name: string;
+  spend: number;
+  userId: string | null;
+};
+
 export type CostsDataType = {
   month: string;
   allocatedFunds: number;
@@ -28,4 +34,5 @@ export type CostsDataType = {
   selected: boolean;
   id: string;
   lastCostUpdate: LastCostUpdateType;
+  labelsData?: LabelsDataType[];
 };

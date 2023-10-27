@@ -1,7 +1,7 @@
 import youtubeIcon from "./assets/services/youtube.svg";
 import telegramIcon from "./assets/services/telegram.png";
 import netflixIcon from "./assets/services/netflix.png";
-import voliaIcon from "./assets/services/volia.png";
+import internet from "./assets/services/internet.png";
 import steamIcon from "./assets/services/steam.png";
 import megogoIcon from "./assets/services/megogo.png";
 import { ServiceType } from "./models";
@@ -23,9 +23,9 @@ export const services: ServiceType[] = [
     value: "netflix",
   },
   {
-    img: voliaIcon,
-    label: "Volia",
-    value: "volia",
+    img: internet,
+    label: "Internet",
+    value: "internet",
   },
   {
     img: steamIcon,
