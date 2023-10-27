@@ -1,11 +1,12 @@
 {
   "files": {
-    "main.css": "/static/css/main.3fb44c7e.css",
-    "main.js": "/static/js/main.ff6bf811.js",
+    "main.css": "/static/css/main.c2584b35.css",
+    "main.js": "/static/js/main.b3840a9e.js",
     "static/js/787.b4ab4cdd.chunk.js": "/static/js/787.b4ab4cdd.chunk.js",
     "static/media/telegram.png": "/static/media/telegram.7e0e8edf5c0ab7648854.png",
     "static/media/steam.png": "/static/media/steam.e4cab8898356955595df.png",
     "static/media/cat.png": "/static/media/cat.478848939e8a55ae3865.png",
+    "static/media/internet.png": "/static/media/internet.95699ba766f7fbfbf3cd.png",
     "static/media/Growing flower.gif": "/static/media/Growing flower.15f21583155eba77d9c1.gif",
     "static/media/dog.png": "/static/media/dog.e6d8067d27cb5448fb9e.png",
     "static/media/fleas.png": "/static/media/fleas.d75ddb7429a86ee3ba85.png",
@@ -26,12 +27,12 @@
     "index.html": "/index.html",
     "static/media/collapse-left.svg": "/static/media/collapse-left.63f820371a2745cd81465f3d8f63454f.svg",
     "static/media/youtube.svg": "/static/media/youtube.6d5f0726fd66ae187d6228aecf9e151b.svg",
-    "main.3fb44c7e.css.map": "/static/css/main.3fb44c7e.css.map",
-    "main.ff6bf811.js.map": "/static/js/main.ff6bf811.js.map",
+    "main.c2584b35.css.map": "/static/css/main.c2584b35.css.map",
+    "main.b3840a9e.js.map": "/static/js/main.b3840a9e.js.map",
     "787.b4ab4cdd.chunk.js.map": "/static/js/787.b4ab4cdd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3fb44c7e.css",
-    "static/js/main.ff6bf811.js"
+    "static/css/main.c2584b35.css",
+    "static/js/main.b3840a9e.js"
   ]
 }
