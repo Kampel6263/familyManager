@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./App.module.scss";
 import Button from "./components/Button/Button";
 import ContentWrapper from "./components/ContentWrapper/ContentWrapper";
@@ -6,10 +6,28 @@ import Header from "./components/Header/Header";
 import ModalWrapper from "./components/ModalWrapper/ModalWrapper";
 import Navbar from "./components/Navbar/Navbar";
 import useDataManage from "./hooks/useDataManage";
+import moment from "moment";
+
+const INTERVAL = 5000;
 
 const App: React.FC = () => {
   const { appData, modalData, setData, login, logout, addUser } =
     useDataManage();
+  useEffect(() => {
+    if (appData?.userData.data?.uid) {
+      const interval = setInterval(() => {
+        const minutesDiff = moment().diff(
+          moment(appData.lastUpdate),
+          "minutes"
+        );
+        if (minutesDiff > 5) {
+          logout();
+        }
+      }, INTERVAL);
+      return () => clearInterval(interval);
+    }
+  }, [appData]);
+
   return (
     <div className={styles.app}>
       <Header userData={appData.userData.data} logout={logout} />

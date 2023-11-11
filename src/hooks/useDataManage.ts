@@ -14,8 +14,6 @@ import {
   LoadingState,
   setDataType,
   SibscribersDataType,
-  TeamDataType,
-  TeamUserDataType,
   TodoListDataType,
   WishListType,
 } from "../models";
@@ -26,11 +24,13 @@ import usePetsData from "./usePetsData";
 import useTeamData from "./useTeamData";
 import useFinancesData from "./useFinancesData";
 import dayjs from "dayjs";
+import moment from "moment";
 
 const useDataManage = () => {
   const { app } = useInitFirebase();
 
   const initialAppData: AppDataType = {
+    lastUpdate: moment().toISOString(),
     wishListData: {
       data: null,
       state: LoadingState.LOADING,
@@ -78,6 +78,7 @@ const useDataManage = () => {
   }, [user]);
 
   const getData = async (databaseQuery: DatabaseQueryEnum) => {
+    setAppData({ ...appData, lastUpdate: moment().toISOString() });
     const querySnapshot = await getDocs(
       collection(db, `${databaseQuery}-${appData.teamData.data!.teamId}`)
     );
