@@ -48,7 +48,7 @@
   }
   .item {
     @include item();
-    grid-template-columns: 21px 0.4fr 1fr 140px 140px;
+    grid-template-columns: 21px 0.7fr 140px 1fr 140px 140px;
   }
   img {
     width: 21px;

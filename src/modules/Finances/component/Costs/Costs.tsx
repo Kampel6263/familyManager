@@ -69,6 +69,7 @@ const Costs: React.FC<Props> = ({
                     date: dayjs(new Date()).format("HH:mm, DD/MM/YYYY"),
                     userId: userData.uid,
                     id: uuidv4(),
+                    label: formData?.label
                   },
                 ],
               }

@@ -82,6 +82,7 @@ const Payments: React.FC<Props> = ({ selectedMonth, teamData, setData }) => {
           <div className={styles.item}>
             <div>Name</div>
             <div></div>
+            <div>Label</div>
             <div>Comment</div>
             <div>Sum</div>
             <div>Date</div>
@@ -92,7 +93,7 @@ const Payments: React.FC<Props> = ({ selectedMonth, teamData, setData }) => {
               <div className={styles.item} key={el.id}>
                 <img src={user?.photoURL} alt="" />
                 <div>{user?.displayName} </div>
-
+                <div>{el?.label}</div>
                 <div
                   className={styles.comment}
                   onClick={() =>
