@@ -1,6 +1,6 @@
 export type SpendingHistoryData = {
   comment?: string;
-  label?: string
+  label?: string;
   sum: number;
   date: string;
   userId: string;
@@ -25,6 +25,7 @@ export type LabelsDataType = {
   name: string;
   spend: number;
   userId: string | null;
+  id: string;
 };
 
 export type CostsDataType = {

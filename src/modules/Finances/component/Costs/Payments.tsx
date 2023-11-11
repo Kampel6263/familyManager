@@ -7,6 +7,7 @@ import {
   DatabaseQueryEnum,
   LoadingState,
   TeamDataType,
+  UserDataType,
   setDataType,
 } from "../../../../models";
 
@@ -19,10 +20,16 @@ import Button from "../../../../components/Button/Button";
 type Props = {
   selectedMonth: CostsDataType | null;
   teamData: TeamDataType;
+  userData: UserDataType;
   setData: (data: setDataType) => void;
 };
 
-const Payments: React.FC<Props> = ({ selectedMonth, teamData, setData }) => {
+const Payments: React.FC<Props> = ({
+  selectedMonth,
+  teamData,
+  userData,
+  setData,
+}) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [spendingData, setSpendingData] = useState<SpendingDataType | null>(
@@ -31,19 +38,56 @@ const Payments: React.FC<Props> = ({ selectedMonth, teamData, setData }) => {
 
   const [editedData, setEditedData] = useState<{
     comment: string;
+    label: string;
+    sum: string;
     id: string;
   } | null>(null);
 
-  const handleEditComment = (newComment: string, itemId: string) => {
+  const handleEditComment = () => {
     if (selectedMonth) {
+      const oldData = spendingData?.spendingHistory.find(
+        (el) => el.id === editedData?.id
+      );
+
       const data: CostsDataType = {
         ...selectedMonth,
+        labelsData:
+          oldData?.label !== editedData?.label
+            ? selectedMonth.labelsData?.map((el) => {
+                if (el.name === oldData?.label) {
+                  return { ...el, spend: el.spend - oldData.sum };
+                }
+                if (el.name === editedData?.label) {
+                  return { ...el, spend: el.spend + (oldData?.sum || 0) };
+                }
+                return el;
+              })
+            : selectedMonth.labelsData?.map((el) =>
+                el.name === editedData?.label
+                  ? {
+                      ...el,
+                      spend:
+                        el.spend + +(editedData.sum || 0) - (oldData?.sum || 0),
+                    }
+                  : el
+              ),
+
         spendingData: selectedMonth.spendingData.map((el) =>
           el.id === id
             ? {
                 ...el,
+                spendingSum:
+                  el.spendingSum +
+                  (+(editedData?.sum || 0) - (oldData?.sum || 0)),
                 spendingHistory: el.spendingHistory.map((_el) =>
-                  _el.id === itemId ? { ..._el, comment: newComment } : _el
+                  _el.id === editedData?.id
+                    ? {
+                        ..._el,
+                        comment: editedData.comment,
+                        label: editedData.label,
+                        sum: +editedData.sum,
+                      }
+                    : _el
                 ),
               }
             : el
@@ -90,18 +134,22 @@ const Payments: React.FC<Props> = ({ selectedMonth, teamData, setData }) => {
           {reversed?.map((el) => {
             const user = teamData.users.find((user) => user.uid === el.userId);
             return (
-              <div className={styles.item} key={el.id}>
+              <div
+                className={styles.item}
+                key={el.id}
+                onClick={() =>
+                  setEditedData({
+                    comment: el.comment || "",
+                    label: el.label || "",
+                    sum: String(el.sum),
+                    id: el.id,
+                  })
+                }
+              >
                 <img src={user?.photoURL} alt="" />
                 <div>{user?.displayName} </div>
                 <div>{el?.label}</div>
-                <div
-                  className={styles.comment}
-                  onClick={() =>
-                    setEditedData({ comment: el.comment || "", id: el.id })
-                  }
-                >
-                  {el.comment || "---"}
-                </div>
+                <div className={styles.comment}>{el.comment || "---"}</div>
                 <div>{formatValue(el.sum, "₴")}</div>
                 <div>{el.date}</div>
               </div>
@@ -109,9 +157,9 @@ const Payments: React.FC<Props> = ({ selectedMonth, teamData, setData }) => {
           })}
         </Table>
       </div>
-      <ModalWrapper modalOpen={!!editedData?.id} height={165}>
+      <ModalWrapper modalOpen={!!editedData?.id} height={255}>
         <div className={styles.modal}>
-          <h3 className={styles.title}>Edit comment</h3>
+          <h3 className={styles.title}>Edit payment</h3>
           <FormWrapper>
             <input
               type="text"
@@ -121,13 +169,40 @@ const Payments: React.FC<Props> = ({ selectedMonth, teamData, setData }) => {
                 setEditedData({ ...editedData, comment: e.target.value })
               }
             />
+            <select
+              name="label"
+              placeholder="Select label"
+              value={editedData?.label}
+              onChange={(e) =>
+                editedData &&
+                setEditedData({ ...editedData, label: e.target.value })
+              }
+            >
+              {selectedMonth?.labelsData
+                ?.filter((el) => el.userId === userData.uid || !el.userId)
+                .map((el, i) => (
+                  <option value={el.name} key={el.name + i}>
+                    {el.name}
+                  </option>
+                ))}
+            </select>
+
+            <input
+              type="number"
+              value={editedData?.sum}
+              onChange={(e) =>
+                editedData &&
+                setEditedData({ ...editedData, sum: e.target.value })
+              }
+            />
+
             <div className={styles.buttons}>
               <Button
-                onClick={() =>
-                  handleEditComment(editedData?.comment || "", editedData!.id)
-                }
+                onClick={() => handleEditComment()}
                 text="Save"
                 nativeType="submit"
+                disabled={!editedData?.sum}
+                type="primary"
               />
               <Button
                 onClick={() => setEditedData(null)}

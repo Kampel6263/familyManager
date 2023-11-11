@@ -39,3 +39,8 @@ export const services: ServiceType[] = [
   },
   // TODO: lifecell, domofon,  voda
 ];
+
+export const NO_LABEL_DATA = {
+  id: "no-label",
+  name: "No label",
+};

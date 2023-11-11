@@ -8,11 +8,30 @@
 
 .item {
   @include item();
-  grid-template-columns: 1fr 180px 100px;
+  grid-template-columns: 1fr 180px 100px 35px;
 }
 
 .buttons {
   button:first-child {
     margin-right: 10px;
+  }
+}
+
+.costsByLabel {
+  input {
+    border: none;
+    padding: 0;
+    line-height: 21px;
+    height: 21px;
+    font-size: 16px;
+  }
+  .name {
+    cursor: pointer;
+  }
+  .edit {
+    display: grid;
+    grid-template-columns: 1fr 100px 100px;
+    column-gap: 20px;
+    align-items: center;
   }
 }

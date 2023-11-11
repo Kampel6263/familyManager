@@ -9,6 +9,7 @@
   padding: 8px 25px;
   justify-items: start;
   column-gap: 10px;
+  align-items: center;
   &:nth-child(2n-1) {
     &:not(:first-child) {
       background: rgba(241, 245, 248, 0.6);

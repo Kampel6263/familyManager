@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { TabEnum } from "../../models/main";
+import { NO_LABEL_DATA } from "../../../../constants";
 type Props = {
   selectedMonth: CostsDataType | null;
   userData: UserDataType;
@@ -35,7 +36,7 @@ const Costs: React.FC<Props> = ({
     sum?: string;
     comment?: string;
     label?: string;
-  } | null>({ label: "No label" });
+  } | null>({ label: NO_LABEL_DATA.name });
 
   const handleCancel = () => {
     setFormData(null);
@@ -69,7 +70,7 @@ const Costs: React.FC<Props> = ({
                     date: dayjs(new Date()).format("HH:mm, DD/MM/YYYY"),
                     userId: userData.uid,
                     id: uuidv4(),
-                    label: formData?.label
+                    label: formData?.label,
                   },
                 ],
               }

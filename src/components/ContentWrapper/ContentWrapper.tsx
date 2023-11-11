@@ -99,6 +99,7 @@ const ContentWrapper: React.FC<Props> = ({
                     <RouteWrapper state={appData.financesData.state}>
                       <Payments
                         teamData={appData.teamData.data}
+                        userData={appData.userData.data}
                         selectedMonth={
                           appData.financesData.data?.find(
                             (el) => el.selected

@@ -12,7 +12,8 @@ import classNames from "classnames";
 import FormWrapper from "../../../../components/FormWrapper/FormWrapper";
 import { CostsDataType } from "../../models/costs";
 import { formatValue } from "../../../../helpers";
-
+import { v4 as uuidv4 } from "uuid";
+import { NO_LABEL_DATA } from "../../../../constants";
 type Props = {
   monthData: CostsDataType | null;
   userData: UserDataType;
@@ -43,27 +44,73 @@ const CostsByLabel: FC<Props> = ({
         return el.userId === userData.uid;
       }
     })
-    .sort((a, b) => a.spend - b.spend);
+    .sort((a, b) => b.spend - a.spend);
 
   const handleAdd = () => {
     if (monthData) {
       const data: CostsDataType = {
         ...monthData,
         labelsData: [
-          ...(monthData.labelsData || []),
-          { name: labelName, spend: 0, userId: userData.uid },
+          ...(monthData.labelsData?.map((el) =>
+            el.id
+              ? el
+              : {
+                  ...el,
+                  id:
+                    el.name === NO_LABEL_DATA.name
+                      ? NO_LABEL_DATA.id
+                      : uuidv4(),
+                }
+          ) || []),
+          { name: labelName, spend: 0, userId: userData.uid, id: uuidv4() },
         ],
       };
       setData({ data, query: DatabaseQueryEnum.FINANCES, teamId: true });
       handleCancel();
     }
   };
+  const handleRemove = (id: string) => {
+    if (monthData) {
+      const labelSum =
+        monthData.labelsData?.find((el) => el.id === id)?.spend || 0;
+      const data: CostsDataType = {
+        ...monthData,
+        labelsData: monthData.labelsData
+          ?.filter((el) => el.id !== id)
+          .map((el) =>
+            el.id === NO_LABEL_DATA.id
+              ? { ...el, spend: el.spend + labelSum }
+              : el
+          ),
+      };
+      setData({ data, query: DatabaseQueryEnum.FINANCES, teamId: true });
+    }
+  };
+
+  // const handleEdit = () => {
+  //   if (monthData) {
+  //     const data: CostsDataType = {
+  //       ...monthData,
+  //       labelsData: monthData.labelsData?.map((el) =>
+  //         el.id === editData?.id ? { ...el, name: editData.name } : el
+  //       ),
+  //     };
+  //     setData({ data, query: DatabaseQueryEnum.FINANCES, teamId: true });
+  //     setEditData(null);
+  //   }
+  // };
+
   const handleCancel = () => {
     setLabelName("");
     setNewLabel(false);
   };
+
+  // const [editData, setEditData] = useState<{ name: string; id: string } | null>(
+  //   null
+  // );
+
   return (
-    <div>
+    <div className={styles.costsByLabel}>
       <div className={styles.header}>
         <h2>Labels</h2>
         <Button
@@ -93,6 +140,7 @@ const CostsByLabel: FC<Props> = ({
                   text="Save"
                   type="primary"
                   nativeType="submit"
+                  disabled={!labelName}
                 />
                 <Button text="Cancel" onClick={() => handleCancel()} />
               </div>
@@ -100,13 +148,49 @@ const CostsByLabel: FC<Props> = ({
           )}
           {filteredData?.map((el) => (
             <div className={styles.item}>
-              <div>{el.name}</div>
+              {/* {editData?.id === el.id ? (
+                <div className={styles.edit}>
+                  <input
+                    value={editData.name}
+                    autoFocus={true}
+                    onChange={(e) =>
+                      setEditData({ ...editData, name: e.target.value })
+                    }
+                  />
+                  <Button
+                    onClick={() => handleEdit()}
+                    text="Save"
+                    type="primary"
+                    disabled={!editData.name}
+                  />
+                  <Button onClick={() => setEditData(null)} text="Cancel" />
+                </div>
+              ) : ( */}
+              <div
+                className={styles.name}
+                // onClick={() =>
+                //   el.id !== NO_LABEL_DATA.id &&
+                //   setEditData({ id: el.id, name: el.name })
+                // }
+              >
+                {el.name}
+              </div>
+              {/* )} */}
               <div>{formatValue(el.spend, "₴")}</div>
               <div>
                 {((el.spend / (monthData?.allocatedFunds || 0)) * 100).toFixed(
                   2
                 ) || 0}{" "}
                 %
+              </div>
+              <div>
+                {el.id !== NO_LABEL_DATA.id && (
+                  <Button
+                    onClick={() => handleRemove(el.id)}
+                    text=""
+                    type="remove"
+                  />
+                )}
               </div>
             </div>
           ))}

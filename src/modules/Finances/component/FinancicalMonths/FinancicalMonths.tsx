@@ -6,6 +6,7 @@ import styles from "./FinancicalMonths.module.scss";
 import classNames from "classnames";
 import CreateFinancicalMonthsModal from "../../modals/CreateFinancicalMonthsModal";
 import { useState } from "react";
+import { formatValue } from "../../../../helpers";
 
 type Props = {
   costsData: CostsDataType[];
@@ -51,6 +52,9 @@ const FinancicalMonths: React.FC<Props> = ({
             )}
           >
             <div>{dayjs(el.month).format("MMMM, YYYY")}</div>
+            <div className={styles.allocatedFunds}>
+              {formatValue(el.allocatedFunds, undefined, "₴")}
+            </div>
             {el.selected && <div className={styles.info}>&#x2714;</div>}
             {el.closed && (
               <div className={classNames(styles.info, styles.closed)}>

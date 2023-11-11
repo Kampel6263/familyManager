@@ -18,6 +18,17 @@
     cursor: pointer;
     border: 2px solid transparent;
     background: #fff;
+    .allocatedFunds {
+      position: absolute;
+      left: 7px;
+      top: 7px;
+      font-size: 14px;
+      line-height: 14px;
+      padding: 2px 7px;
+      background-color: rgb(226, 253, 228);
+      border-radius: 4px;
+      color: #000000;
+    }
     .info {
       position: absolute;
       right: 5px;

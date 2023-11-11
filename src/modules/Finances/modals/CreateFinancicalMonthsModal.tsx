@@ -10,7 +10,7 @@ import {
   SpendingDataType,
 } from "../models/costs";
 import classNames from "classnames";
-
+import { NO_LABEL_DATA } from "../../../constants";
 type Props = {
   modalOpen: boolean;
   spendingData: SpendingDataType[];
@@ -42,10 +42,17 @@ const CreateFinancicalMonthsModal: React.FC<Props> = ({
         }))
       : [];
 
-    const labelsDataForRequest =
+    const labelsDataForRequest: LabelsDataType[] =
       saveCategories && labelsData
         ? labelsData.map((el) => ({ ...el, spend: 0 }))
-        : [{ name: "No label", spend: 0, userId: null }];
+        : [
+            {
+              name: NO_LABEL_DATA.name,
+              spend: 0,
+              userId: null,
+              id: NO_LABEL_DATA.id,
+            },
+          ];
 
     const data: CostsDataType = {
       allocatedFunds: funds || 0,
