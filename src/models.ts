@@ -95,7 +95,6 @@ export enum LoadingState {
 }
 
 export type AppDataType = {
-  lastUpdate: string;
   wishListData: {
     data: WishListType[] | null;
     state: LoadingState;

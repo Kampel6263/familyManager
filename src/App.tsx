@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./App.module.scss";
 import Button from "./components/Button/Button";
 import ContentWrapper from "./components/ContentWrapper/ContentWrapper";
@@ -13,20 +13,25 @@ const INTERVAL = 5000;
 const App: React.FC = () => {
   const { appData, modalData, setData, login, logout, addUser } =
     useDataManage();
+  const [lastUpdate, setLastUpdate] = useState<string>(moment().toISOString());
+
+  useEffect(() => {
+    window.addEventListener("click", () => {
+      setLastUpdate(moment().toISOString());
+    });
+  }, []);
+
   useEffect(() => {
     if (appData?.userData.data?.uid) {
       const interval = setInterval(() => {
-        const minutesDiff = moment().diff(
-          moment(appData.lastUpdate),
-          "minutes"
-        );
+        const minutesDiff = moment().diff(moment(lastUpdate), "minutes");
         if (minutesDiff > 5) {
           logout();
         }
       }, INTERVAL);
       return () => clearInterval(interval);
     }
-  }, [appData]);
+  }, [lastUpdate]);
 
   return (
     <div className={styles.app}>

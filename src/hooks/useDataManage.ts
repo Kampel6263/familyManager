@@ -30,7 +30,6 @@ const useDataManage = () => {
   const { app } = useInitFirebase();
 
   const initialAppData: AppDataType = {
-    lastUpdate: moment().toISOString(),
     wishListData: {
       data: null,
       state: LoadingState.LOADING,
@@ -85,7 +84,6 @@ const useDataManage = () => {
   };
 
   const setData = async ({ query, data, teamId }: setDataType) => {
-    setAppData({ ...appData, lastUpdate: moment().toISOString() });
     try {
       if (typeof data === "string") {
         return await deleteDoc(
