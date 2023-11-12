@@ -78,7 +78,6 @@ const useDataManage = () => {
   }, [user]);
 
   const getData = async (databaseQuery: DatabaseQueryEnum) => {
-    setAppData({ ...appData, lastUpdate: moment().toISOString() });
     const querySnapshot = await getDocs(
       collection(db, `${databaseQuery}-${appData.teamData.data!.teamId}`)
     );
@@ -86,6 +85,7 @@ const useDataManage = () => {
   };
 
   const setData = async ({ query, data, teamId }: setDataType) => {
+    setAppData({ ...appData, lastUpdate: moment().toISOString() });
     try {
       if (typeof data === "string") {
         return await deleteDoc(

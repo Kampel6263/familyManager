@@ -137,6 +137,14 @@ const Costs: React.FC<Props> = ({
                 name="label"
                 placeholder="Select label"
                 value={formData?.label}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    if (formData?.sum) {
+                      handleSubmit();
+                    }
+                  }
+                }}
                 onChange={(e) =>
                   setFormData({ ...formData, label: e.target.value })
                 }
