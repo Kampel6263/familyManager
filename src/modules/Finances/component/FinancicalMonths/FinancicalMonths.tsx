@@ -28,7 +28,7 @@ const FinancicalMonths: React.FC<Props> = ({
   return (
     <div className={styles.financicalMonths}>
       <h2>Financical months</h2>
-      <div className={styles.cards}>
+      <div className={classNames(styles.cards, "scrollbar")}>
         <div
           className={classNames(
             styles.card,

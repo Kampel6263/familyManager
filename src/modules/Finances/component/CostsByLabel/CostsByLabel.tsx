@@ -119,36 +119,36 @@ const CostsByLabel: FC<Props> = ({
           type="primary"
         />
       </div>
-      <div>
-        <Table state={LoadingState.LOADED} className={styles.table}>
-          <div className={styles.item}>
-            <div>Label</div>
-            <div>Spend</div>
-            <div>Spending, %</div>
-          </div>
-          {newLabel && (
-            <FormWrapper className={classNames(styles.item)}>
-              <input
-                type="text"
-                autoFocus
-                value={labelName}
-                onChange={(e) => setLabelName(e.target.value)}
+
+      <Table state={LoadingState.LOADED} className={styles.table}>
+        <div className={styles.item}>
+          <div>Label</div>
+          <div>Spend</div>
+          <div>Spending, %</div>
+        </div>
+        {newLabel && (
+          <FormWrapper className={classNames(styles.item)}>
+            <input
+              type="text"
+              autoFocus
+              value={labelName}
+              onChange={(e) => setLabelName(e.target.value)}
+            />
+            <div className={styles.buttons}>
+              <Button
+                onClick={() => handleAdd()}
+                text="Save"
+                type="primary"
+                nativeType="submit"
+                disabled={!labelName}
               />
-              <div className={styles.buttons}>
-                <Button
-                  onClick={() => handleAdd()}
-                  text="Save"
-                  type="primary"
-                  nativeType="submit"
-                  disabled={!labelName}
-                />
-                <Button text="Cancel" onClick={() => handleCancel()} />
-              </div>
-            </FormWrapper>
-          )}
-          {filteredData?.map((el) => (
-            <div className={styles.item}>
-              {/* {editData?.id === el.id ? (
+              <Button text="Cancel" onClick={() => handleCancel()} />
+            </div>
+          </FormWrapper>
+        )}
+        {filteredData?.map((el) => (
+          <div className={styles.item}>
+            {/* {editData?.id === el.id ? (
                 <div className={styles.edit}>
                   <input
                     value={editData.name}
@@ -166,36 +166,35 @@ const CostsByLabel: FC<Props> = ({
                   <Button onClick={() => setEditData(null)} text="Cancel" />
                 </div>
               ) : ( */}
-              <div
-                className={styles.name}
-                // onClick={() =>
-                //   el.id !== NO_LABEL_DATA.id &&
-                //   setEditData({ id: el.id, name: el.name })
-                // }
-              >
-                {el.name}
-              </div>
-              {/* )} */}
-              <div>{formatValue(el.spend, "₴")}</div>
-              <div>
-                {((el.spend / (monthData?.allocatedFunds || 0)) * 100).toFixed(
-                  2
-                ) || 0}{" "}
-                %
-              </div>
-              <div>
-                {el.id !== NO_LABEL_DATA.id && (
-                  <Button
-                    onClick={() => handleRemove(el.id)}
-                    text=""
-                    type="remove"
-                  />
-                )}
-              </div>
+            <div
+              className={styles.name}
+              // onClick={() =>
+              //   el.id !== NO_LABEL_DATA.id &&
+              //   setEditData({ id: el.id, name: el.name })
+              // }
+            >
+              {el.name}
             </div>
-          ))}
-        </Table>
-      </div>
+            {/* )} */}
+            <div>{formatValue(el.spend, "₴")}</div>
+            <div>
+              {((el.spend / (monthData?.allocatedFunds || 0)) * 100).toFixed(
+                2
+              ) || 0}{" "}
+              %
+            </div>
+            <div>
+              {el.id !== NO_LABEL_DATA.id && (
+                <Button
+                  onClick={() => handleRemove(el.id)}
+                  text=""
+                  type="remove"
+                />
+              )}
+            </div>
+          </div>
+        ))}
+      </Table>
     </div>
   );
 };

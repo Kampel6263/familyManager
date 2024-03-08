@@ -39,7 +39,7 @@ const Costs: React.FC<Props> = ({
   } | null>({ label: NO_LABEL_DATA.name });
 
   const handleCancel = () => {
-    setFormData(null);
+    setFormData({ label: NO_LABEL_DATA.name });
     setEditedItem("");
   };
 
