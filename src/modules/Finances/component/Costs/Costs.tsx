@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { TabEnum } from "../../models/main";
 import { NO_LABEL_DATA } from "../../../../constants";
+import moment from "moment";
 type Props = {
   selectedMonth: CostsDataType | null;
   userData: UserDataType;
@@ -104,6 +105,10 @@ const Costs: React.FC<Props> = ({
       data: filteredData || [],
       key: "spendingSum",
     });
+
+  const nextMonth15 = moment().add(1, "months").date(15);
+  const daysToEndOfMonth = nextMonth15.diff(moment(), "days");
+
   return (
     <div className={styles.costs}>
       <div className={styles.header}>
@@ -119,6 +124,7 @@ const Costs: React.FC<Props> = ({
         <div className={styles.item}>
           <div>Category</div>
           <div>Balance</div>
+          <div>Balance/day</div>
           <div>Spend</div>
         </div>
         {filteredData?.map((el) =>
@@ -178,7 +184,14 @@ const Costs: React.FC<Props> = ({
             <div className={styles.item} onClick={() => setEditedItem(el.id)}>
               <div>{el.categoryName}</div>
               <div>{formatValue(el.allocatedSum - el.spendingSum, "₴")}</div>
+              <div>
+                {formatValue(
+                  (el.allocatedSum - el.spendingSum) / daysToEndOfMonth,
+                  "₴"
+                )}
+              </div>
               <div>{formatValue(el.spendingSum, "₴")}</div>
+
               {selectedMonth.selected && (
                 <Button
                   text="View"

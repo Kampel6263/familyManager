@@ -21,7 +21,7 @@
   }
   .item {
     @include item();
-    grid-template-columns: 1fr 140px 140px 53px;
+    grid-template-columns: 1fr repeat(3, 150px) 53px;
     &:not(:last-child):not(:first-child) {
       cursor: pointer;
       transition: 0.1s;
