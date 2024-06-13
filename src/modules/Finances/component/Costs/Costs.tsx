@@ -123,8 +123,8 @@ const Costs: React.FC<Props> = ({
       <Table state={LoadingState.LOADED} className={styles.table}>
         <div className={styles.item}>
           <div>Category</div>
-          <div>Balance</div>
           <div>Balance/day</div>
+          <div>Balance</div>
           <div>Spend</div>
         </div>
         {filteredData?.map((el) =>
@@ -183,15 +183,14 @@ const Costs: React.FC<Props> = ({
           ) : (
             <div className={styles.item} onClick={() => setEditedItem(el.id)}>
               <div>{el.categoryName}</div>
-              <div>{formatValue(el.allocatedSum - el.spendingSum, "₴")}</div>
               <div>
                 {formatValue(
                   (el.allocatedSum - el.spendingSum) / daysToEndOfMonth,
                   "₴"
                 )}
               </div>
+              <div>{formatValue(el.allocatedSum - el.spendingSum, "₴")}</div>
               <div>{formatValue(el.spendingSum, "₴")}</div>
-
               {selectedMonth.selected && (
                 <Button
                   text="View"
@@ -207,6 +206,7 @@ const Costs: React.FC<Props> = ({
         )}
         <div className={styles.item}>
           <div>Total</div>
+          <div>{formatValue(totalBalance / daysToEndOfMonth, "₴")}</div>
           <div>{formatValue(totalBalance, "₴")}</div>
           <div>
             {formatValue(
