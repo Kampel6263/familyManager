@@ -127,8 +127,12 @@ const Costs: React.FC<Props> = ({
           <div>Balance</div>
           <div>Spend</div>
         </div>
-        {filteredData?.map((el) =>
-          editedItem === el.id ? (
+        {filteredData?.map((el) => {
+          const balancePerDay =
+            (el.allocatedSum - el.spendingSum) / daysToEndOfMonth;
+          const initialBalancePerDay = el.allocatedSum / daysToEndOfMonth;
+          const balanceDifference = balancePerDay - initialBalancePerDay;
+          return editedItem === el.id ? (
             <FormWrapper className={styles.form}>
               <input
                 type="number"
@@ -183,11 +187,19 @@ const Costs: React.FC<Props> = ({
           ) : (
             <div className={styles.item} onClick={() => setEditedItem(el.id)}>
               <div>{el.categoryName}</div>
-              <div>
-                {formatValue(
-                  (el.allocatedSum - el.spendingSum) / daysToEndOfMonth,
-                  "₴"
-                )}
+              <div className={styles.balancePerDay}>
+                {formatValue(balancePerDay, "₴")}
+                {(balanceDifference >= 1 || balanceDifference <= -1) &&
+                  balanceDifference && (
+                    <span
+                      className={
+                        balanceDifference > 0 ? styles.good : styles.bad
+                      }
+                    >
+                      {balanceDifference > 0 ? "+" : ""}
+                      {balanceDifference.toFixed(1)}
+                    </span>
+                  )}
               </div>
               <div>{formatValue(el.allocatedSum - el.spendingSum, "₴")}</div>
               <div>{formatValue(el.spendingSum, "₴")}</div>
@@ -202,8 +214,8 @@ const Costs: React.FC<Props> = ({
                 />
               )}
             </div>
-          )
-        )}
+          );
+        })}
         <div className={styles.item}>
           <div>Total</div>
           <div>{formatValue(totalBalance / daysToEndOfMonth, "₴")}</div>

@@ -101,3 +101,19 @@
 .comment {
   width: 100%;
 }
+
+.balancePerDay {
+  display: flex;
+  align-items: center;
+  span {
+    font-size: 13px;
+    margin-left: 2px;
+    letter-spacing: -0.5px;
+    &.good {
+      color: #2cd852;
+    }
+    &.bad {
+      color: #ff4c4c;
+    }
+  }
+}

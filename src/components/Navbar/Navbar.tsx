@@ -74,7 +74,7 @@ const Navbar: React.FC<Props> = () => {
         <CollapsSvg className={open ? "" : styles.collaps} />{" "}
         {open && <span>Collaps</span>}
       </div>
-      <div className={styles.version}>v_0.3.12</div>
+      <div className={styles.version}>v_0.3.13</div>
     </div>
   );
 };
