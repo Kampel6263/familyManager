@@ -25,6 +25,8 @@ type Props = {
   setData: (data: setDataType) => void;
 };
 
+const DAYS_IN_FINANCIAL_MONTH = 35;
+
 const Costs: React.FC<Props> = ({
   selectedMonth,
   userData,
@@ -130,7 +132,8 @@ const Costs: React.FC<Props> = ({
         {filteredData?.map((el) => {
           const balancePerDay =
             (el.allocatedSum - el.spendingSum) / daysToEndOfMonth;
-          const initialBalancePerDay = el.allocatedSum / daysToEndOfMonth;
+          const initialBalancePerDay =
+            el.allocatedSum / DAYS_IN_FINANCIAL_MONTH;
           const balanceDifference = balancePerDay - initialBalancePerDay;
           return editedItem === el.id ? (
             <FormWrapper className={styles.form}>
