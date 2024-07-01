@@ -108,7 +108,7 @@ const Costs: React.FC<Props> = ({
       key: "spendingSum",
     });
 
-  const nextMonth15 = moment().add(1, "months").date(15);
+  const nextMonth15 = moment(selectedMonth.month).add(1, "months").date(15);
   const daysToEndOfMonth = nextMonth15.diff(moment(), "days");
 
   return (
