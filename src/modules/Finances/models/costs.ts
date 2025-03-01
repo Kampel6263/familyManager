@@ -37,4 +37,5 @@ export type CostsDataType = {
   id: string;
   lastCostUpdate: LastCostUpdateType;
   labelsData?: LabelsDataType[];
+  endMonthDate?: number;
 };

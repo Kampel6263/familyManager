@@ -2,7 +2,7 @@
   background: #fff;
   padding: 16px 12px;
   border-radius: 10px;
-  width: 65px;
+  width: 85px;
   border: 1px solid #d3dfeb;
   display: grid;
 
@@ -10,9 +10,13 @@
   transition: 0.15s;
   &.open {
     width: 222px;
+    .navbarItem {
+      justify-content: start;
+    }
   }
   &Item {
     display: flex;
+    justify-content: center;
     align-items: center;
     text-decoration: none;
     padding: 8px 11px;

@@ -44,3 +44,5 @@ export const NO_LABEL_DATA = {
   id: "no-label",
   name: "No label",
 };
+
+export const END_MONTH_DATE = 15;

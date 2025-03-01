@@ -16,7 +16,7 @@ import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { TabEnum } from "../../models/main";
-import { NO_LABEL_DATA } from "../../../../constants";
+import { END_MONTH_DATE, NO_LABEL_DATA } from "../../../../constants";
 import moment from "moment";
 type Props = {
   selectedMonth: CostsDataType | null;
@@ -24,8 +24,6 @@ type Props = {
   teamData: TeamDataType;
   setData: (data: setDataType) => void;
 };
-
-const DAYS_IN_FINANCIAL_MONTH = 35;
 
 const Costs: React.FC<Props> = ({
   selectedMonth,
@@ -108,7 +106,13 @@ const Costs: React.FC<Props> = ({
       key: "spendingSum",
     });
 
-  const nextMonth15 = moment(selectedMonth.month).add(1, "months").date(15);
+  const nextMonth15 = moment(selectedMonth.month)
+    .add(1, "months")
+    .date(selectedMonth.endMonthDate || END_MONTH_DATE);
+  const deysInFinancialMonth = nextMonth15.diff(
+    moment(selectedMonth.month),
+    "days"
+  );
   const daysToEndOfMonth = nextMonth15.diff(moment(), "days");
 
   return (
@@ -132,8 +136,7 @@ const Costs: React.FC<Props> = ({
         {filteredData?.map((el) => {
           const balancePerDay =
             (el.allocatedSum - el.spendingSum) / daysToEndOfMonth;
-          const initialBalancePerDay =
-            el.allocatedSum / DAYS_IN_FINANCIAL_MONTH;
+          const initialBalancePerDay = el.allocatedSum / deysInFinancialMonth;
           const balanceDifference = balancePerDay - initialBalancePerDay;
           return editedItem === el.id ? (
             <FormWrapper className={styles.form}>

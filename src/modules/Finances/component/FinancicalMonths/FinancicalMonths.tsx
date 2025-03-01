@@ -4,9 +4,9 @@ import { setDataType } from "../../../../models";
 import { CostsDataType } from "../../models/costs";
 import styles from "./FinancicalMonths.module.scss";
 import classNames from "classnames";
-import CreateFinancicalMonthsModal from "../../modals/CreateFinancicalMonthsModal";
 import { useState } from "react";
 import { formatValue } from "../../../../helpers";
+import CreateEditFinancicalMonthsModal from "../../modals/CreateEditFinancicalMonthsModal";
 
 type Props = {
   costsData: CostsDataType[];
@@ -25,6 +25,10 @@ const FinancicalMonths: React.FC<Props> = ({
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [editMonthData, setEditMonthData] = useState<CostsDataType | null>(
+    null
+  );
+
   return (
     <div className={styles.financicalMonths}>
       <h2>Financical months</h2>
@@ -42,7 +46,12 @@ const FinancicalMonths: React.FC<Props> = ({
         {costsData.map((el) => (
           <div
             onClick={() => {
-              setSelectedMonth(el);
+              if (selectedMonth?.id === el.id) {
+                setEditMonthData(el);
+                setModalOpen(true);
+              } else {
+                setSelectedMonth(el);
+              }
             }}
             className={classNames(
               styles.card,
@@ -64,12 +73,16 @@ const FinancicalMonths: React.FC<Props> = ({
           </div>
         ))}
       </div>
-      <CreateFinancicalMonthsModal
+      <CreateEditFinancicalMonthsModal
         setData={setData}
         spendingData={costsData[0]?.spendingData || null}
         labelsData={costsData[0]?.labelsData}
         modalOpen={modalOpen}
-        closeModal={() => setModalOpen(false)}
+        editMonthData={editMonthData}
+        closeModal={() => {
+          setModalOpen(false);
+          setEditMonthData(null);
+        }}
       />
     </div>
   );
