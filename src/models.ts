@@ -7,6 +7,7 @@ export enum DatabaseQueryEnum {
   TEAMS = "teams",
   PETS = "pets",
   FINANCES = "finances",
+  CONFIG = "config",
 }
 
 export enum PriorityEnum {
@@ -125,6 +126,10 @@ export type AppDataType = {
     data: CostsDataType[] | null;
     state: LoadingState;
   };
+};
+
+export type ConfigType = {
+  autoLogout: boolean;
 };
 
 export type setDataType = {

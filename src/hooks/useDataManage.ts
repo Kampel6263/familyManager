@@ -25,6 +25,7 @@ import useTeamData from "./useTeamData";
 import useFinancesData from "./useFinancesData";
 import dayjs from "dayjs";
 import moment from "moment";
+import useConfigHandle from "./useConfigData";
 
 const useDataManage = () => {
   const { app } = useInitFirebase();
@@ -68,6 +69,8 @@ const useDataManage = () => {
     app,
     clearAppData: () => setAppData(initialAppData),
   });
+
+  const { config } = useConfigHandle({ db });
 
   useEffect(() => {
     setAppData({
@@ -225,7 +228,7 @@ const useDataManage = () => {
     }
   }, [appData.teamData.data?.teamId]);
 
-  return { appData, modalData, setData, login, logout, addUser };
+  return { appData, modalData, config, setData, login, logout, addUser };
 };
 
 export default useDataManage;

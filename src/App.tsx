@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./App.module.scss";
 import Button from "./components/Button/Button";
 import ContentWrapper from "./components/ContentWrapper/ContentWrapper";
@@ -11,18 +11,22 @@ import moment from "moment";
 const INTERVAL = 5000;
 
 const App: React.FC = () => {
-  const { appData, modalData, setData, login, logout, addUser } =
+  const { appData, modalData, config, setData, login, logout, addUser } =
     useDataManage();
   const [lastUpdate, setLastUpdate] = useState<string>(moment().toISOString());
 
-  useEffect(() => {
-    window.addEventListener("click", () => {
-      setLastUpdate(moment().toISOString());
-    });
-  }, []);
+  const autoLogout = useMemo(() => config.autoLogout, [config.autoLogout]);
 
   useEffect(() => {
-    if (appData?.userData.data?.uid) {
+    if (autoLogout) {
+      window.addEventListener("click", () => {
+        setLastUpdate(moment().toISOString());
+      });
+    }
+  }, [autoLogout]);
+
+  useEffect(() => {
+    if (appData?.userData.data?.uid && autoLogout) {
       const interval = setInterval(() => {
         const minutesDiff = moment().diff(moment(lastUpdate), "minutes");
         if (minutesDiff > 5) {
@@ -31,7 +35,7 @@ const App: React.FC = () => {
       }, INTERVAL);
       return () => clearInterval(interval);
     }
-  }, [lastUpdate]);
+  }, [lastUpdate, autoLogout]);
 
   return (
     <div className={styles.app}>
